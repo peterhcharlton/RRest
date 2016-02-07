@@ -3,4 +3,4 @@ Algorithms for estimation of respiratory rate from the electrocardiogram and pho
 
 For details of this project please see:
 
-http://peterhcharlton.github.io/RRest/
+# http://peterhcharlton.github.io/RRest/
