@@ -1,13 +1,11 @@
-# Respiratory Rate Estimation
+# Respiratory Rate Estimation Algorithms
 
-[![][release img]][release]
-[![][license img]][license]
+This repository contains algorithms for estimation of respiratory rate from the electrocardiogram and photoplethysmogram.
 
-This repository contains algorithms for estimation of respiratory rate from physiological signals.
+## User Manual
 
+The accompanying Wiki acts as a user manual for the algorithms presented in this repository.
 
-the electrocardiogram and photoplethysmogram
+## Further Resources
 
-For details of this project please see:
-
-# http://peterhcharlton.github.io/RRest/
+For those interested in estimating respiratory rate from physiological signals, the wider [Respiratory Rate Estimation project](http://peterhcharlton.github.io/RRest/), of which this is a part, will be of interest. It also contains additional material such as data to use with the algorithms, publications arising from the project, and details of how to contribute.
