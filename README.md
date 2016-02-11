@@ -4,7 +4,7 @@ This repository contains algorithms for estimation of respiratory rate from the 
 
 ## User Manual
 
-The accompanying Wiki acts as a user manual for the algorithms presented in this repository.
+The accompanying [Wiki](https://github.com/peterhcharlton/RRest/wiki) acts as a user manual for the algorithms presented in this repository.
 
 ## Further Resources
 
