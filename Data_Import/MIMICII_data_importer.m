@@ -1,13 +1,51 @@
 function MIMICII_data_importer
+% MIMICII_data_importer imports data from the MIMIC II database for use
+% with RRest, a toolbox of respiratory rate algorithms.
+%
+%               MIMICII_data_importer
+%
+%	Inputs:
+%       none
+%                       just specify the relevant paths in the
+%                       "universal_parameters" function below.
+%
+%	Outputs:
+%       a single file containing all the data is written to the path
+%       specified by "up.paths.analysis_path".
+%
+%   Requirements:
+%       data download is performed automatically using the script below. It
+%       uses "wget.exe", which you must have in the "up.paths.data_root"
+%       directory. To do so, install "wget" (e.g. from http://gnuwin32.sourceforge.net/packages/wget.htm)
+%       and copy "wget.exe" into the "up.paths.data_root" directory.
+%           
+%   Further Information:
+%       This version of the MIMICII_data_importer is provided to facilitate
+%       reproduction of the analysis performed in:
+%           Charlton P.H. et al., "Waveform Analysis to Estimate
+%           Respiratory Rate" [In Press]
+%       Further information on this study can be obtained at:
+%           http://peterhcharlton.github.io/RRest/waveform_analysis.html
+%       In addition, further information on RRest, including future
+%       versions, can be obtained at:
+%           http://peterhcharlton.github.io/RRest/index.html
+%
+%   Comments, Questions, Criticisms, Feedback, Contributions:
+%       See: http://peterhcharlton.github.io/RRest/contributions.html
+%
+%   Version:
+%       v.1 - published on 23rd Feb 2016 by Peter Charlton
+%
+%   Licence:
+%       please see the accompanying file named "LICENSE"
+%
 
 %% Setup
 up = universal_parameters;
 
 %% Download data
-% You must have "wget.exe" in the "up.paths.data_root" directory for this to
-% work. To do so, install "wget" (e.g. from http://gnuwin32.sourceforge.net/packages/wget.htm)
-% and copy "wget.exe" into the "up.paths.data_root" directory.
-%download_data(up);
+% You must have "wget.exe" in the "up.paths.data_root" directory for this to work. 
+download_data(up);
 
 %% Identify patient stays
 pt_stays = identify_pt_stays(up); 
@@ -19,39 +57,53 @@ data = extract_from_mimic_ii(pt_stays, up);
 save_data_in_common_format(data, up);
 
 %% Identify sub-groups of neonates and adults
+% This isn't necessary to obtain the data, but creates a plot used in the
+% book chapter.
 results = sub_group_identification(up);
-
 
 end
 
 function up = universal_parameters
 
+%%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
+
+% Specify the root data directory (where the data will be stored)
+up.paths.data_root = 'C:\Documents\Data\MIMIC_MATCHED\';
+
+% Specify the web address of the data to be downloaded
+rel_database = 'mimic2wdb';
+up.paths.database_dir = ['http://physionet.org/physiobank/database/', rel_database];
+
+% Please note that your system may require the slashes in file paths to be
+% of the opposite direction. In which case, change the following:
+slash = '\';
+
+% if you want .eps illustrations, then do as follows:
+up.eps_figs = 0;  % set this to 1
+if up.eps_figs
+    % download 'export_fig' from:
+    % http://uk.mathworks.com/matlabcentral/fileexchange/23629-export-fig
+    % add the path of your download:
+    export_fig_dir_path = 'C:\Users\pc13\Documents\GitHub\phd\Tools\Other Scripts\export_fig\';
+    addpath(export_fig_dir_path)
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % extraction definitions
 up.extraction.period = 600;    % period of waveform data to extract (in s)
 up.extraction.rel_sigs = {'II', 'PLETH', 'RESP'};    % required signals
-up.extraction.rel_nums = {'HR', 'PULSE', 'RESP'};    % required signals
+up.extraction.rel_nums = {'HR', 'PULSE', 'RESP'};    % required numerics
 up.no_pt_stays = 100;
 
 % database definitions
-rel_database = 'mimic2wdb';
 up.mimic_db.version = 3;
 up.mimic_db.part = 0;
 
 % paths
-up.paths.database_dir = ['http://physionet.org/physiobank/database/', rel_database];
-up.paths.data_root = 'C:\Documents\Data\MIMIC_MATCHED\';
 up.paths.file_location = [up.paths.data_root, 'physionet.org\physiobank\database\', rel_database, '\', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '\'];
-up.paths.analysis_path = [up.paths.data_root, 'Analysis_files\Data_for_Analysis\'];
-up.paths.plots = [up.paths.data_root, 'Analysis_files\Results\Figures\'];
-
-% if you want .eps illustrations, then do as follows:
-up.eps_figs = 1;
-if up.eps_figs
-    % you need to download 'export_fig' from:
-    % http://uk.mathworks.com/matlabcentral/fileexchange/23629-export-fig
-    export_fig_dir_path = 'C:\Users\pc13\Documents\GitHub\phd\Tools\Other Scripts\export_fig\';
-    addpath(export_fig_dir_path)
-end
+up.paths.analysis_path = [up.paths.data_root, 'Analysis_files', slash 'Data_for_Analysis', slash ];
+up.paths.plots = [up.paths.data_root, 'Analysis_files', slash 'Results', slash 'Figures', slash ];
 
 % Add all functions within the directory
 addpath(genpath(fileparts(mfilename('fullpath'))));
