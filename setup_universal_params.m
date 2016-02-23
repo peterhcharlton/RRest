@@ -5,19 +5,29 @@ function up = setup_universal_params(period_orig)
 %               setup_universal_params
 %
 %	Inputs:
-%		period_orig - the period of Vortal recording on which to do the analysis, e.g. 'rest', 'walk', 'ex', 'rec', 'synth'
+%		period_orig - the period of Vortal recording on which to do the
+%		analysis, e.g. 'mimic'
 %
 %	Outputs:
 %       up      - a struct of universal parameters
 %
 %   See also:
-%       run_rr_algorithms.m
+%       RRest.m
 %
 
-%% Computer specific path settings
-% Change these if you are using this for the first time (they're at the
-% bottom of this file)
-up = computer_specific_settings;
+%%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
+
+% Please note that your system may require the slashes in file paths to be
+% of the opposite direction. In which case, change the following:
+up.paths.slash_direction = '\';
+
+% Specify path of data root folder
+up.paths.root_folder = 'C:\Documents\Data\';
+
+% specify other folders
+up.paths.paper_figures_folder = 'C:\Users\pc13\Dropbox\VORTAL\VORTAL_theoret_lims_yhvs\Figures\';   % in which to save eps figures for direct import into publication.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Compulsory setup tasks
 
@@ -288,28 +298,5 @@ up.paramSet.DClifton_opts = opts; clear opts
 
 %% save universal params file
 save(up_path, 'up');
-
-end
-
-function up = computer_specific_settings
-
-%% These are the settings which need to be changed when running this on a new computer
-
-% Specify path of data root folder
-up.paths.slash_direction = '\';
-up.paths.root_folder = 'C:\Documents\Data\';
-
-% specify other folders
-up.paths.paper_figures_folder = 'C:\Users\pc13\Dropbox\VORTAL\VORTAL_theoret_lims_yhvs\Figures\';   % in which to save eps figures for direct import into publication.
-up.paths.db_data = 'C:\Documents\Data\VORTAL\Analysis_files\Processed_Data\db_data.mat';
-
-% % Add additional methods (non-published) path for Pete's computer
-% cname = getenv('computername');
-% if strcmp(cname, 'BIOENG043-PC')
-%     addpath('C:\Documents\Matlab analysis\AR_RR\');
-%     up.al.options.ekg_filt = {'ARa', 'ARf', 'Wfm', 'Wam'}; %, 'ARb'};
-%     up.al.options.ppg_filt = {'ARa', 'ARf', 'Wfm', 'Wam'}; %, 'ARb', , 'BFi', 'CCF'
-%     addpath(genpath('C:\Users\pc13\Documents\GitHub\phd\Attractor_Reconstruction\'));
-% end
 
 end
