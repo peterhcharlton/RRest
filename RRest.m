@@ -51,26 +51,19 @@ function RRest(period)
 up = setup_universal_params(period);
 
 %% Estimate RRs from ECG and PPG
-%setup_processing(up);
+% Cycle through each stage of the algorithms and carry out processing
+for key_comp_no = 1 : length(up.al.key_components)
+    feval(up.al.key_components{key_comp_no}, up);
+end
 
 %% Find SQI results of raw waveforms
-%calculate_sqi(up);
+calculate_sqi(up);
 
 %% Estimate Reference RR from Imp and Paw
-%estimate_ref_rr(up);
+estimate_ref_rr(up);
 
 %% Statistical Analysis
 calc_stats4(up);
 create_table_of_algorithms(up);
-
-end
-
-function setup_processing(up)
-
-%% Cycle through each key component and carry out processing
-
-for key_comp_no = 1 : length(up.al.key_components)
-    feval(up.al.key_components{key_comp_no}, up);
-end
 
 end
