@@ -125,6 +125,10 @@ elseif strcmp(period, 'listen')
     % LISTEN data
     up.paths.root_data_folder = [up.paths.root_folder, 'RRLISTEN', up.paths.slash_direction];
     up.paths.data_load_filename = 'RRLISTENdata';
+elseif strcmp(period, 'mydata')
+    % LISTEN data
+    up.paths.root_data_folder = [up.paths.root_folder, 'MYDATA', up.paths.slash_direction];
+    up.paths.data_load_filename = 'MYDATAdata';
 else
     % VORTAL Data
     up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
