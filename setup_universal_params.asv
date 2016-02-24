@@ -34,9 +34,7 @@ function up = setup_universal_params(period_orig)
 %       please see the accompanying file named "LICENSE"
 %
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%% FILE PATHS TO BE SPECIFIED %%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
 
 % Please note that your system may require the slashes in file paths to be
 % of the opposite direction. In which case, change the following:
@@ -53,8 +51,8 @@ up.paths.root_folder = 'C:\Documents\Data\';
 up.paths.paper_figures_folder = 'C:\Users\pc13\Dropbox\VORTAL\VORTAL_theoret_lims_yhvs\Figures\';   % in which to save eps figures for direct import into publication.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%% LOAD PREVIOUS UNIVERSAL PARAMETERS %%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Compulsory setup tasks
 
 % set current directory to that of this file
 cd(fileparts(mfilename('fullpath')))
@@ -66,18 +64,20 @@ up_filename = 'up';
 up_path = [fileparts(mfilename('fullpath')), up.paths.slash_direction, up_foldername, up.paths.slash_direction, up_filename];
 % Specify whether or not to re-make the universal_params
 redo_up =1;
+
+%% Optional setup tasks
+
 % Don't remake the universal_params file unless needed:
 if exist([up_filename, '.mat'], 'file') & ~redo_up
     fprintf('\n--- Loading Universal Parameters ');
     load(up_filename);
     return
 end
+
 % Otherwise make the universal_params file:
 fprintf('\n--- Creating Universal Parameters ');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%% ALGORITHMS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% ALGORITHMS %%%%%%%%%%%%%%%
 
 % Specify the stages of the algorithms (best left alone):
 up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};     %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
@@ -91,10 +91,10 @@ up.al.options.PDt = {'IMS'};                                                % Po
 up.al.options.RDt = {'GC'};                                                 % Possible methods: 'GC', 'ME'
 up.al.options.FMe = {'am', 'fm', 'bw'}; % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'
 up.al.options.RS = {'linB'};                                                % Possible methods: 'cub', 'cubB', 'brg', 'lin', 'brgB', 'linB'
-% Specify the interchangeable technique(s) to be used for filter-based respiratory signal extraction:
+% Specify the interchangeable technique(s) to be used for filter-based respiratory signal extraction
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
-% Specify the interchangeable technique(s) for RR Estimation
+up.al.options.estimate_rr = {'FTS', 'ACF', 'ARPz', 'WCH', 'ARM', 'ARP', 'CtO', 'CtA', 'ARS', 'PKS', 'ZeX', 'PZX'}; %  Possible methods: 'ARM', 'ACF', 'ARP', 'ARPz', 'CtO', 'CtA', 'ARS', 'FTS', 'PKS', 'ZeX', 'PZX'
 up.al.options.estimate_rr = {'FTS', 'CtO'}; % , 'ARe'
 % Different methods for fusion of RR estimates:
 up.al.options.fuse_rr = {'fus_mod', 'fus_temp'};                            % Possible methods: 'fus_mod', 'fus_temp'

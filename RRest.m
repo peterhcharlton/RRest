@@ -1,7 +1,6 @@
 function RRest(period)
-% RRest runs RR algorithms on ECG and PPG signals using
-% each possible combination of options, as specified in
-% "setup_universal_params.m"
+% RRest runs RR algorithms on ECG and PPG signals using each possible
+% combination of options, as specified in "setup_universal_params.m".
 %
 %               RRest('mimic')
 %
@@ -25,6 +24,9 @@ function RRest(period)
 %           alg_names           Names of RR algorithms tested
 %           win_data            Data for every algorithm tested, every
 %                               window, and every subject.
+%
+%   Context:    This is the main file used to run the algorithms. It calls
+%               lots of other functions, contained in separate files.
 %           
 %   Further Information:
 %       This version of the RRest is provided to facilitate reproduction of

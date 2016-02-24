@@ -68,7 +68,7 @@ function up = universal_parameters
 %%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
 
 % Specify the root data directory (where the data will be stored)
-up.paths.data_root = 'C:\Documents\Data\MIMIC_MATCHED\';
+up.paths.data_root = 'C:\Documents\Data\MIMICII\';
 
 % Specify the web address of the data to be downloaded
 rel_database = 'mimic2wdb';
