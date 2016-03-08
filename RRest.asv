@@ -54,13 +54,12 @@ function RRest(period)
 up = setup_universal_params(period);
 
 %% Estimate RRs from ECG and PPG
-% Carry out processing for each stage of the algorithms
+% Carry out processing for each stage of the algorithms and 
 for key_comp_no = 1 : length(up.al.key_components)
     feval(up.al.key_components{key_comp_no}, up);
 end
 
-%% Conduct Signal Quality Assessment of Signals
-% Each window
+%% Conduct Signal Quality Assessment of Waveforms
 calculate_sqi(up);
 
 %% Estimate Reference RRs
