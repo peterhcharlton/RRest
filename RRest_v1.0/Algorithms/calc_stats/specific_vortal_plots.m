@@ -12,7 +12,7 @@ if ~isempty(strfind(up.paths.paper_figures_folder, 'pc13')) & ...
         & isempty(strfind(up.paths.data_save_folder, 'EX'))
     % Load resp sigs
     subj = 2;
-    load_path = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.respSigs];
+    load_path = [strrep(up.paths.data_save_folder, 'rest_and_rec', 'rest'), num2str(subj), up.paths.filenames.respSigs];
     resp_sigs = load(load_path);
     if sum(strcmp(fieldnames(resp_sigs), 'ppg_flt_Wam'))
         % Load raw sig

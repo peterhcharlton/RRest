@@ -18,7 +18,7 @@ for subj = up.paramSet.subj_list
     % Skip if this processing has been done previously
     save_name = 'rr_ref';
     savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.ref_rrs, '.mat'];
-    %check_exists
+    check_exists
     
     %% Load window timings
     loadpath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.win_timings, '.mat'];
@@ -123,6 +123,79 @@ for subj = up.paramSet.subj_list
 %                     clear rr_cto rr_fft rrs breaths breath_times sum_both ave_breath_duration win_breaths el sig rel_data interp_data downsample_freq rel_els rel_paw rel_imp
 %                 end
                 
+        end
+        clear no_wins s wins win_no temp_t lpf_sig
+        
+%         if ~isempty(strfind(up.paths.data_load_filename, 'VORTAL'))
+%             for inputs = {'sum_both', 'imp', 'paw'}
+%                 eval(['rel_data = rr_ref.' inputs{1,1} '_thresh;'])
+%                 if sum(strcmp(fieldnames(rel_data), 'snr')) && strcmp(inputs{1,1}, 'imp')
+%                     rel_data.resp_sqi = rel_data.snr;
+%                     rel_data.snr_log = logical(rel_data.snr > 0.75);
+%                 elseif sum(strcmp(fieldnames(rel_data), 'snr'))
+%                     rel_data.snr_log = logical(rel_data.snr);
+%                     rel_data = rmfield(rel_data, 'snr');
+%                 end
+%                 eval(['rr_ref.' inputs{1,1} '_thresh = rel_data;'])
+%                 clear rel_data
+%             end
+%         end
+        
+        %% Save ref RRs to file
+        save_or_append_data
+        clear rr_ref
+    end
+    
+    %% Find ref RRs from simultaneous impedance respiratory signal
+    if strcmp(up.paramSet.ref_method, 'imp')
+        % Extract respiratory signals
+        ext_sig = extract_resp_sigs(data, subj, up);
+        % Determine SNRs
+        snr_sig = calc_snrs(ext_sig, subj, wins, up);
+        clear ext_sig
+        % LPF to exclude freqs above resp
+        lpf_sig = lpf_to_exclude_resp(snr_sig, subj, up);
+        clear snr_sig
+        % setup
+        no_wins = length(wins.t_start);
+        temp_t = mean([wins.t_start(:)' ; wins.t_end(:)']); temp_t = temp_t(:);
+        rr_ref.v = nan(length(wins.t_start),1);
+        rr_ref.snr_log = false(length(wins.t_start),1);
+        % cycle through each window
+        for win_no = 1 : no_wins
+            % select data for this window
+            rel_els = find(lpf_sig.t >= wins.t_start(win_no) & lpf_sig.t <= wins.t_end(win_no));
+            rel_data.t = lpf_sig.t(rel_els);
+            rel_data.v = lpf_sig.v(rel_els);
+            % interpolate data to be at fixed time values
+            downsample_freq = 5;
+            interp_data.t = wins.t_start(win_no): (1/downsample_freq) : wins.t_end(win_no);
+            interp_data.v = interp1(rel_data.t, rel_data.v, interp_data.t, 'linear');
+            % get rid of nans
+            interp_data.v(isnan(interp_data.v)) = median(interp_data.v(~isnan(interp_data.v)));
+            % normalise data
+            rel_sig.v = (interp_data.v - mean(interp_data.v))/std(interp_data.v);
+            rel_sig.t = interp_data.t;
+            rel_sig.snr = lpf_sig.snr;
+            rel_sig.fs = downsample_freq;
+            clear rel_data interp_data
+            % perform combined CtO and FFT analysis:
+            % CtO
+            rr_cto = ref_cto(rel_sig, up);
+            % FFT
+            rr_fft = ref_fft(rel_sig, downsample_freq, up);
+            % Final RR for this window
+            rrs = [rr_cto, rr_fft];
+            if range(rrs) < 2
+                rr_ref.v(win_no,1) = mean(rrs);
+                rr_ref.snr_log(win_no,1) = true;
+            else
+                rr_ref.v(win_no,1) = nan;
+                rr_ref.snr_log(win_no,1) = false;
+            end
+            
+            clear rel_sig rr_cto rr_fft rrs rel_data interp_data downsample_freq rel_els
+            
         end
         clear no_wins s wins win_no temp_t lpf_sig
         
@@ -283,20 +356,20 @@ end
 function rr_cto = ref_cto(sum_both, up)
 
 % identify peaks
-diffs_on_left_of_pt = diff(sum_both.v_n); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt>0);
-diffs_on_right_of_pt = diff(sum_both.v_n); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt<0);
+diffs_on_left_of_pt = diff(sum_both.v); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt>0);
+diffs_on_right_of_pt = diff(sum_both.v); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt<0);
 peaks = find(diffs_on_left_of_pt & diffs_on_right_of_pt)+1;
 % identify troughs
-diffs_on_left_of_pt = diff(sum_both.v_n); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt<0);
-diffs_on_right_of_pt = diff(sum_both.v_n); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt>0);
+diffs_on_left_of_pt = diff(sum_both.v); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt<0);
+diffs_on_right_of_pt = diff(sum_both.v); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt>0);
 troughs = find(diffs_on_left_of_pt & diffs_on_right_of_pt)+1;
 % define threshold
-q3 = quantile(sum_both.v_n(peaks), 0.75);
+q3 = quantile(sum_both.v(peaks), 0.75);
 thresh = 0.2*q3;
 % find relevant peaks and troughs
 extrema = sort([peaks(:); troughs(:)]);
-rel_peaks = peaks(sum_both.v_n(peaks) > thresh);
-rel_troughs = troughs(sum_both.v_n(troughs) < 0);
+rel_peaks = peaks(sum_both.v(peaks) > thresh);
+rel_troughs = troughs(sum_both.v(troughs) < 0);
 
 % find valid breathing cycles
 % valid cycles start with a peak:
@@ -309,7 +382,7 @@ for peak_no = 1 : (length(rel_peaks)-1)
     cycle_rel_troughs = rel_troughs(rel_troughs > rel_peaks(peak_no) & rel_troughs < rel_peaks(peak_no+1));
     if length(cycle_rel_troughs) == 1
         valid_cycles(peak_no) = 1;
-        cycle_durations(peak_no) = sum_both.t_n(rel_peaks(peak_no+1)) - sum_both.t_n(rel_peaks(peak_no));
+        cycle_durations(peak_no) = sum_both.t(rel_peaks(peak_no+1)) - sum_both.t(rel_peaks(peak_no));
     end
     
 end
@@ -323,172 +396,6 @@ else
     rr_cto = 60/ave_breath_duration;
 end
 
-end
-
-function [qual, rr_cto] = ref_cto_mod(sum_both, up, save_name)
-
-%% Identify relevant peaks and troughs
-
-% identify peaks
-diffs_on_left_of_pt = diff(sum_both.v_n); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt>0);
-diffs_on_right_of_pt = diff(sum_both.v_n); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt<0);
-peaks = find(diffs_on_left_of_pt & diffs_on_right_of_pt)+1;
-% identify troughs
-diffs_on_left_of_pt = diff(sum_both.v_n); diffs_on_left_of_pt = diffs_on_left_of_pt(1:(end-1)); diffs_on_left_of_pt = logical(diffs_on_left_of_pt<0);
-diffs_on_right_of_pt = diff(sum_both.v_n); diffs_on_right_of_pt = diffs_on_right_of_pt(2:end); diffs_on_right_of_pt = logical(diffs_on_right_of_pt>0);
-troughs = find(diffs_on_left_of_pt & diffs_on_right_of_pt)+1;
-% define peaks threshold
-q3 = quantile(sum_both.v_n(peaks), 0.9);
-thresh = 0.2*q3;
-% find relevant peaks
-rel_peaks = peaks(sum_both.v_n(peaks) > thresh);
-% define troughs threshold
-q3t = quantile(sum_both.v_n(troughs), 0.1);
-thresh = 0.2*q3t;
-% find relevant troughs
-rel_troughs = troughs(sum_both.v_n(troughs) < thresh);
-
-%% find valid breathing cycles
-% exclude peaks which aren't the highest between a pair on consecutive
-% troughs:
-invalid_peaks = zeros(length(rel_peaks),1);
-for trough_pair_no = 1 : (length(rel_troughs)-1)
-    
-    % identify peaks between this pair of troughs
-    cycle_rel_peak_els = find(rel_peaks > rel_troughs(trough_pair_no) & rel_peaks < rel_troughs(trough_pair_no+1));
-    cycle_rel_peaks = rel_peaks(cycle_rel_peak_els);
-    if length(cycle_rel_peaks) > 1
-        [~, rel_el] = max(sum_both.v_n(cycle_rel_peaks));
-        bad_rel_peaks_els = setxor(1:length(cycle_rel_peak_els), rel_el);
-        invalid_peaks(cycle_rel_peak_els(bad_rel_peaks_els)) = 1;
-    end
-end
-rel_peaks = rel_peaks(~invalid_peaks);
-
-% valid cycles start with a peak:
-valid_cycles = false(length(rel_peaks)-1,1);
-cycle_durations = nan(length(rel_peaks)-1,1);
-
-for peak_no = 2 : length(rel_peaks)
-    
-    % exclude if there isn't a rel trough between this peak and the
-    % previous one
-    cycle_rel_troughs = rel_troughs(rel_troughs > rel_peaks(peak_no-1) & rel_troughs < rel_peaks(peak_no));
-    if length(cycle_rel_troughs) ~= 0
-        valid_cycles(peak_no-1) = true;
-        cycle_durations(peak_no-1) = sum_both.t_n(rel_peaks(peak_no)) - sum_both.t_n(rel_peaks(peak_no-1));
-    end
-end
-valid_cycle_durations = cycle_durations(valid_cycles);
-
-% Calc RR
-if isempty(valid_cycle_durations)
-    rr_cto = nan;
-else
-    % Using average breath length
-    ave_breath_duration = mean(valid_cycle_durations);
-    rr_cto = 60/ave_breath_duration;
-end
-
-%% Resiratory SQI
-
-if isnan(rr_cto)
-    qual = false;
-else
-    
-    %find mean breath-to-breath interval to define size of template
-    rr=floor(mean(diff(rel_peaks)));
-    ts=[];
-    j=find(rel_peaks>rr/2);
-    l=find(rel_peaks+floor(rr/2)<length(sum_both.v_n));
-    if isempty(l)==1
-        return
-    else
-        %find breaths
-        for k=j(1):l(end)
-            t=sum_both.v_n(rel_peaks(k)-floor(rr/2):rel_peaks(k)+floor(rr/2));
-            tt=t/norm(t); tt = tt(:)';
-            ts=[ts;tt];
-        end
-    end
-    
-    %find ave template
-    if size(ts,1) > 1
-        avtempl=mean(ts,1);
-    else
-        avtempl=nan(size(ts));
-    end
-    
-    %now calculate correlation for every beat in this window
-    r2 = nan(size(ts,1),1);
-    for k=1:size(ts,1)
-        r2(k)=corr2(avtempl,ts(k,:));
-    end
-    %calculate mean correlation coefficient
-    R2=mean(abs(r2));
-    
-    % calculate number of abnormal breath durations
-    median_dur = median(valid_cycle_durations);
-    temp = valid_cycle_durations > (1.5*median_dur) | valid_cycle_durations < (0.5*median_dur);
-    prop_bad_breaths = 100*sum(temp)/length(temp);
-    
-    % find prop of window taken up by normal breath durations
-    norm_dur = sum(valid_cycle_durations(~temp));
-    win_length = sum_both.t_n(end) - sum_both.t_n(1);
-    prop_norm_dur = 100*norm_dur/win_length;
-    
-    % determine whether this window is high or low quality
-    if prop_norm_dur > 50 && prop_bad_breaths < 10 && R2 >= 0.8
-        qual = true;
-    else
-        qual = false;
-    end
-    
-end
-
-%% Plot template and inidividual beats
-
-plot_ex = 0;
-if plot_ex && ~isnan(rr_cto)
-    
-    paper_size = [12, 8];
-    figure('Position', [50, 50, 100*paper_size(1), 100*paper_size(2)], 'Color',[1 1 1])
-    lwidth1 = 3; lwidth2 = 2; ftsize = 22;
-    % plot signal
-    subplot(2,2,[1,2]), plot(sum_both.t_n-sum_both.t_n(1), sum_both.v_n, 'LineWidth', lwidth2), hold on
-    plot(sum_both.t_n(rel_peaks(logical([valid_cycles; 1])))-sum_both.t_n(1), sum_both.v_n(rel_peaks(logical([valid_cycles; 1]))), '.r', 'MarkerSize', 20)
-    %plot(sum_both.t_n(rel_troughs)-sum_both.t_n(1), sum_both.v_n(rel_troughs), '.k', 'MarkerSize', 20)
-    xlim([0, sum_both.t_n(end)-sum_both.t_n(1)])
-    xlabel('Time [s]', 'FontSize', ftsize)
-    ylab=ylabel('Imp', 'FontSize', ftsize, 'Rotation', 0);
-    set(ylab, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-    set(gca, 'FontSize', ftsize, 'YTick', [])
-    % plot template
-    time = 0:(length(avtempl)-1); time = time./sum_both.fs;
-    subplot(2,2,3), hold on,
-    for beat_no = 1 : size(ts,1)
-        plot(time, ts(beat_no,:), 'color', 0.7*[1 1 1], 'LineWidth', lwidth2)
-    end
-    plot(time, avtempl, 'r', 'LineWidth', lwidth1)
-    set(gca, 'YTick', [])
-    xlabel('Time [s]', 'FontSize', ftsize)
-    xlim([0, time(end)])
-    ylab=ylabel('Imp', 'FontSize', ftsize, 'Rotation', 0);
-    set(ylab, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-    set(gca, 'FontSize', ftsize)
-    %set ylim
-    rang = range(ts(:));
-    ylim([min(ts(:))-0.1*rang, max(ts(:))+0.1*rang]);
-    annotation('textbox',[0.5, 0.1, 0.1,0.1],'String',{['R2 = ' num2str(R2, 2)] , ['prop breaths bad = ' num2str(prop_bad_breaths, 2) '%'], ['prop dur good = ' num2str(prop_norm_dur,2) '%']}, 'FontSize', ftsize, 'LineStyle', 'None')
-    if qual
-        annotation('textbox',[0.75, 0.2, 0.1,0.1],'String','High Quality', 'Color', 'b', 'FontSize', ftsize, 'LineStyle', 'None')
-    else
-        annotation('textbox',[0.75, 0.2, 0.1,0.1],'String','Low Quality', 'Color', 'r', 'FontSize', ftsize, 'LineStyle', 'None')
-    end
-    savepath = [up.paths.plots_save_folder, save_name];
-    PrintFigs(gcf, paper_size, savepath, up)
-    close all
-end
 end
 
 function rr_zex = ref_zex(sum_both, up)
@@ -513,7 +420,7 @@ function rr_wch = ref_wch(sum_both, downsample_freq, up)
 
 segLen = 2^nextpow2(12*downsample_freq);
 noverlap = segLen/2;
-[data.power, data.freqs] = pwelch(sum_both.v_n,segLen,noverlap, [], downsample_freq);
+[data.power, data.freqs] = pwelch(sum_both.v,segLen,noverlap, [], downsample_freq);
 
 % Find spectral peak
 [rr_wch, ~, ~] = find_spectral_peak(data, up);
@@ -523,13 +430,13 @@ end
 function rr_fft = ref_fft(sum_both, downsample_freq, up)
 
 % Find FFT
-WINLENGTH = length(sum_both.v_n);
+WINLENGTH = length(sum_both.v);
 NFFT = 2^nextpow2(WINLENGTH);
 HAMMWIN = hamming(WINLENGTH);
 HAMMWIN = HAMMWIN(:);
 f_nyq = downsample_freq/2;
 FREQS = f_nyq.*linspace(0, 1, NFFT/2+1);            % Array of correspondent FFT bin frequencies, in BR (RPM)
-WINDATA = detrend(sum_both.v_n(:));                      % Remove the LSE straight line from the data
+WINDATA = detrend(sum_both.v(:));                      % Remove the LSE straight line from the data
 WINDATA = WINDATA .* HAMMWIN;
 myFFT = fft(WINDATA, NFFT);
 myFFT = myFFT(1 : NFFT/2 + 1);
@@ -565,13 +472,13 @@ function calc_spec(sig, downsample_freq, up)
 close all
 
 % Find FFT
-WINLENGTH = length(sig.v_n);
+WINLENGTH = length(sig.v);
 NFFT = 2^nextpow2(WINLENGTH);
 HAMMWIN = hamming(WINLENGTH);
 HAMMWIN = HAMMWIN(:);
 f_nyq = downsample_freq/2;
 FREQS = f_nyq.*linspace(0, 1, NFFT/2+1);            % Array of correspondent FFT bin frequencies, in BR (RPM)
-WINDATA = detrend(sig.v_n(:));                      % Remove the LSE straight line from the data
+WINDATA = detrend(sig.v(:));                      % Remove the LSE straight line from the data
 WINDATA = WINDATA .* HAMMWIN;
 myFFT = fft(WINDATA, NFFT);
 myFFT = myFFT(1 : NFFT/2 + 1);

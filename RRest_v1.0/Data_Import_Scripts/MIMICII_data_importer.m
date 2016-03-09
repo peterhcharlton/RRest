@@ -45,7 +45,7 @@ up = universal_parameters;
 
 %% Download data
 % You must have "wget.exe" in the "up.paths.data_root" directory for this to work. 
-download_data(up);
+%download_data(up);
 
 %% Identify patient stays
 pt_stays = identify_pt_stays(up); 
@@ -68,7 +68,7 @@ function up = universal_parameters
 %%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
 
 % Specify the root data directory (where the data will be stored)
-up.paths.data_root = 'C:\Documents\Data\MIMICII\';
+up.paths.data_root = 'C:\Documents\Data\mimicii\';
 
 % Specify the web address of the data to be downloaded
 rel_database = 'mimic2wdb';
@@ -111,6 +111,8 @@ addpath(genpath(fileparts(mfilename('fullpath'))));
 end
 
 function download_data(up)
+
+fprintf('\n -- Downloading Data')
 
 %% set current directory to that of wget:
 cd(up.paths.data_root)
@@ -171,6 +173,8 @@ end
 
 function pt_stays = identify_pt_stays(up)
 
+fprintf('\n -- Identifying Patient Stays')
+
 % Folders (each one is a patient stay)
 dirs = dir(up.paths.file_location);
 
@@ -195,6 +199,8 @@ function data = extract_from_mimic_ii(pt_stays, up)
 %       http://physionet.org/physiotools/matlab/wfdb-app-matlab/
 %
 % Reads MIMIC II data and outputs it as a structure of .t and .v values.
+
+fprintf('\n -- Extracting Data from MIMIC II files')
 
 if up.no_pt_stays > length(pt_stays)
     warning('There are fewer ICU stay datasets than requested')
@@ -493,43 +499,12 @@ end
 
 function save_data_in_common_format(old_data, up)
 
+fprintf('\n -- Saving data in appropriate format')
 
 for subj_el = 1:length(old_data)
     
     SID = old_data{1,subj_el}.ID;
     loc = old_data{1,subj_el}.loc;
-    
-    % Insert fixed params
-    data(1,subj_el).id = SID;
-    data(1,subj_el).loc = loc;
-    data(1,subj_el).ventilation = 'unknown';
-    %data(1,subj_el).reference.units.x = 's';
-    %data(1,subj_el).reference.units.hr.y = 'beats/min';
-    %data(1,subj_el).reference.units.rr.y = 'beats/min';
-    
-    % insert PPG signal
-    ppg = old_data{1,subj_el}.waves.PLETH;
-    data(1,subj_el).pleth.signal_e_vlf.y.v = ppg.v;
-    clear ppg
-    data(1,subj_el).pleth.fs = old_data{1,subj_el}.waves.fs;
-    % insert EKG signal
-    ekg = old_data{1,subj_el}.waves.II;
-    data(1,subj_el).ekg.signal_e_vlf.y.v = ekg.v;
-    clear ekg
-    data(1,subj_el).ekg.fs = old_data{1,subj_el}.waves.fs;
-    % insert RESP signal
-    resp = old_data{1,subj_el}.waves.RESP;
-    data(1,subj_el).imp.signal_e_vlf.y = resp.v;
-    clear resp
-    data(1,subj_el).imp.fs = old_data{1,subj_el}.waves.fs;
-    
-    % insert numerics
-    data(1,subj_el).reference.rr.t = old_data{1,subj_el}.numerics.RESP.t;
-    data(1,subj_el).reference.rr.v = old_data{1,subj_el}.numerics.RESP.v;
-    data(1,subj_el).reference.hr.t = old_data{1,subj_el}.numerics.HR.t;
-    data(1,subj_el).reference.hr.v = old_data{1,subj_el}.numerics.HR.v;
-    data(1,subj_el).reference.pr.t = old_data{1,subj_el}.numerics.PULSE.t;
-    data(1,subj_el).reference.pr.v = old_data{1,subj_el}.numerics.PULSE.v;
     
     % insert group name
     if strcmp(loc, 'nicu')
@@ -537,18 +512,59 @@ for subj_el = 1:length(old_data)
     else
         data(1,subj_el).group = 'adult';
     end
-
+    
+    % Insert fixed params
+    
+    data(1,subj_el).fix.id = SID;
+    data(1,subj_el).fix.loc = loc;
+    data(1,subj_el).fix.ventilation = 'unknown';
+    data(1,subj_el).fix.recording_conditions = 'critical care';
+    
+    % insert PPG signal
+    ppg = old_data{1,subj_el}.waves.PLETH;
+    data(1,subj_el).ppg.v = ppg.v;
+    clear ppg
+    data(1,subj_el).ppg.fs = old_data{1,subj_el}.waves.fs;
+    % insert EKG signal
+    ekg = old_data{1,subj_el}.waves.II;
+    data(1,subj_el).ekg.v = ekg.v;
+    clear ekg
+    data(1,subj_el).ekg.fs = old_data{1,subj_el}.waves.fs;
+    % insert RESP signal
+    resp = old_data{1,subj_el}.waves.RESP;
+    data(1,subj_el).ref.resp_sig.imp.v = resp.v;
+    clear resp
+    data(1,subj_el).ref.resp_sig.imp.fs = old_data{1,subj_el}.waves.fs;
+    data(1,subj_el).ref.resp_sig.imp.method = 'thoracic impedance measured using clinical monitor';
+    
+    % insert numerics
+    data(1,subj_el).ref.params.rr.t = old_data{1,subj_el}.numerics.RESP.t;
+    data(1,subj_el).ref.params.rr.v = old_data{1,subj_el}.numerics.RESP.v;
+    data(1,subj_el).ref.params.rr.method = 'derived from thoracic impedance measured using clinical monitor';
+    data(1,subj_el).ref.params.rr.units.t = 's';
+    data(1,subj_el).ref.params.rr.units.v = 'breaths/min';
+    data(1,subj_el).ref.params.hr.t = old_data{1,subj_el}.numerics.HR.t;
+    data(1,subj_el).ref.params.hr.v = old_data{1,subj_el}.numerics.HR.v;
+    data(1,subj_el).ref.params.hr.method = 'derived from ecg measured using clinical monitor';
+    data(1,subj_el).ref.params.hr.units.t = 's';
+    data(1,subj_el).ref.params.hr.units.v = 'beats/min';
+    data(1,subj_el).ref.params.pr.t = old_data{1,subj_el}.numerics.PULSE.t;
+    data(1,subj_el).ref.params.pr.v = old_data{1,subj_el}.numerics.PULSE.v;
+    data(1,subj_el).ref.params.pr.method = 'derived from ppg measured using clinical monitor';
+    data(1,subj_el).ref.params.pr.units.t = 's';
+    data(1,subj_el).ref.params.pr.units.v = 'beats/min';
+    
 end
 
 % Save to file
-save([up.paths.data_root, 'MIMICIIdata'], 'data')
+save([up.paths.data_root, 'mimiciidata'], 'data')
 
 end
 
 function results = sub_group_identification(up)
 
 %% Load data
-load([up.paths.data_root, 'MIMICIIdata'], 'data')
+load([up.paths.data_root, 'mimiciidata'], 'data')
 
 %% Split into sub-groups and identify data for each
 sub_group = zeros(length(data),1);   % zero for neonates, one for adults
