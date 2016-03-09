@@ -1,6 +1,6 @@
 function up = setup_universal_params(period_orig)
 % SETUP_UNIVERSAL_PARAMS sets the universal parameters for use throughout
-%"RRest".
+% "RRest".
 %
 %               setup_universal_params('mimic')
 %
@@ -36,6 +36,7 @@ function up = setup_universal_params(period_orig)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% FILE PATHS TO BE SPECIFIED %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% (requires editing) %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Please note that your system may require the slashes in file paths to be
@@ -54,6 +55,7 @@ up.paths.paper_figures_folder = 'C:\Users\pc13\Dropbox\VORTAL\VORTAL_theoret_lim
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% LOAD PREVIOUS UNIVERSAL PARAMETERS %%%%%%%%
+%%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % set current directory to that of this file
@@ -65,7 +67,7 @@ up_foldername = 'universal_params';
 up_filename = 'up';
 up_path = [fileparts(mfilename('fullpath')), up.paths.slash_direction, up_foldername, up.paths.slash_direction, up_filename];
 % Specify whether or not to re-make the universal_params
-redo_up =1;
+redo_up = true;
 % Don't remake the universal_params file unless needed:
 if exist([up_filename, '.mat'], 'file') & ~redo_up
     fprintf('\n--- Loading Universal Parameters ');
@@ -76,7 +78,8 @@ end
 fprintf('\n--- Creating Universal Parameters ');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%% ALGORITHMS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% ALGORITHMS %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% (edit if you wish) %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Specify the stages of the algorithms (best left alone):
@@ -89,58 +92,29 @@ up.al.sub_components.ekg_feat = {'EHF', 'RDt', 'FPt', 'FMe', 'RS', 'ELF'};  % Sh
 % Specify the interchangeable technique(s) to be used for each component of feature-based extraction of respiratory signals:
 up.al.options.PDt = {'IMS'};                                                % Possible methods: 'DCl', 'COr', 'IMS'
 up.al.options.RDt = {'GC'};                                                 % Possible methods: 'GC', 'ME'
-up.al.options.FMe = {'am', 'fm', 'bw'}; % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'
+up.al.options.FMe = {'am', 'fm', 'bw'};                                     % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'
 up.al.options.RS = {'linB'};                                                % Possible methods: 'cub', 'cubB', 'brg', 'lin', 'brgB', 'linB'
 % Specify the interchangeable technique(s) to be used for filter-based respiratory signal extraction:
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 % Specify the interchangeable technique(s) for RR Estimation
-up.al.options.estimate_rr = {'FTS', 'CtO'}; % , 'ARe'
+up.al.options.estimate_rr = {'FTS', 'CtO'};
 % Different methods for fusion of RR estimates:
-up.al.options.fuse_rr = {'fus_mod', 'fus_temp'};                            % Possible methods: 'fus_mod', 'fus_temp'
-%up.al.options.fuse_rr = {'fus_mod'};
+up.al.options.fuse_rr = {'fus_mod'};                                        % Possible methods: 'fus_mod', 'fus_temp'
 % Components for each method of extraction of RR fusion:
-up.al.sub_components.fus_mod = {'SPA', 'SFu', 'PMC', 'PRC'};                       % Possible methods: 'SFu', 'PMC', 'PRC'
-%up.al.sub_components.fus_mod = {'SFu'};
+up.al.sub_components.fus_mod = {'SFu'};                                     % Possible methods: 'SFu', 'PMC', 'PRC', 'SPA'
 up.al.sub_components.fus_temp = {'TFu'};                                    % Possible methods: 'TFu'
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% DIRECTORIES %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Specify the folders in which to save results files
+% Specify the folders in which to save results files
+up.paths.root_data_folder = [up.paths.root_folder, period_orig, up.paths.slash_direction];
+up.paths.data_load_filename = [period_orig, '_data'];
 
-% Synthetic Data
-period = period_orig;
-if strcmp(period, 'synth')
-    up.paths.root_data_folder = [up.paths.root_folder, 'RRSYNTH', up.paths.slash_direction];
-    up.paths.data_load_filename = 'RRSYNTHdata';
-elseif strcmp(period, 'mimic')
-    % MIMIC Data
-    up.paths.root_data_folder = [up.paths.root_folder, 'MIMICII', up.paths.slash_direction];
-    up.paths.data_load_filename = 'MIMICIIdata';
-elseif strcmp(period, 'capnobase')
-    % CapnoBase Data
-    up.paths.root_data_folder = [up.paths.root_folder, 'CAPNOBASE', up.paths.slash_direction];
-    up.paths.data_load_filename = 'CAPNOBASEdata';
-elseif strcmp(period, 'listen')
-    % LISTEN data
-    up.paths.root_data_folder = [up.paths.root_folder, 'RRLISTEN', up.paths.slash_direction];
-    up.paths.data_load_filename = 'RRLISTENdata';
-elseif strcmp(period, 'mydata')
-    % LISTEN data
-    up.paths.root_data_folder = [up.paths.root_folder, 'MYDATA', up.paths.slash_direction];
-    up.paths.data_load_filename = 'MYDATAdata';
-else
-    % VORTAL Data
-    up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
-    if strcmp(period, 'rest')
-        up.paths.root_data_folder = [up.paths.root_folder, 'VORTAL', up.paths.equipment_type, up.paths.slash_direction];
-    else
-        eval(['up.paths.root_data_folder = [up.paths.root_folder, ''VORTAL', up.paths.equipment_type, '_' upper(period), up.paths.slash_direction, '''];']);
-    end
-    eval(['up.paths.data_load_filename = ''VORTAL_' lower(period) '_data', up.paths.equipment_type, ''';']);    
-end
-
-% File paths
+% Specify file paths
 up.paths.data_load_folder = [up.paths.root_data_folder, 'Analysis_files', up.paths.slash_direction, 'Data_for_Analysis', up.paths.slash_direction];
 up.paths.data_save_folder = [up.paths.root_data_folder, 'Analysis_files', up.paths.slash_direction, 'Component_Data', up.paths.slash_direction];
 up.paths.results_folder = [up.paths.root_data_folder, 'Analysis_files' , up.paths.slash_direction, 'Results', up.paths.slash_direction];
@@ -205,15 +179,17 @@ for s = 1 : length(directories_to_make)
         mkdir(rel_path)
     end    
 end
-% Move data for processing into the relevant folder
+% Move data for processing into the relevant folder (you may wish to delete the original file)
 data_orig_path = [up.paths.root_data_folder, up.paths.data_load_filename, '.mat'];
 data_new_path = [up.paths.data_load_folder, up.paths.data_load_filename, '.mat'];
 if exist(data_orig_path, 'file')
     copyfile(data_orig_path, data_new_path);
 end
-   % you may wish to delete the original file
 
-%% Specify analysis parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% ANALYSIS PARAMETERS %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Find out what subjects need processing
 data_path = [up.paths.data_load_folder, up.paths.data_load_filename, '.mat'];
@@ -228,16 +204,13 @@ else
 end
 up.paramSet.subj_list = 1:length(data);
 up.paramSet.groups = extractfield(data, 'group');
-clear data
 
 % window parameters
 up.paramSet.winLeng = 32;                                                   % the duration of each window in secs
 up.paramSet.winStep = 0;                                                    % the number of secs between each consecutive window
-%up.paramSet.refRR_winStep = 3;                                              % the number of secs between each consecutive window over which the ref RR is calculated
 up.paramSet.buffer_period = 10;                                             % the number of secs to ignore at the start of each resp sig (since the filters might not have stabilised).
 
-% Filter characteristics
-% Eliminate VHFs (above frequency content of signals)
+% Filter characteristics: Eliminate VHFs (above frequency content of signals)
 up.paramSet.elim_vhf.ppg.Fpass = 38.5;  % in HZ
 up.paramSet.elim_vhf.ppg.Fstop = 33.12;  % in HZ   (33.12 and 38.5 provide a -3 dB cutoff of 35 Hz)
 up.paramSet.elim_vhf.ppg.Dpass = 0.05;
@@ -246,64 +219,52 @@ up.paramSet.elim_vhf.ekg.Fpass = 103.7;  % in HZ
 up.paramSet.elim_vhf.ekg.Fstop = 98;  % in HZ    (98 and 103.7 provide a -3 dB cutoff of 100 Hz)
 up.paramSet.elim_vhf.ekg.Dpass = 0.05;
 up.paramSet.elim_vhf.ekg.Dstop = 0.01;
-% Eliminate Mains frequencies (50 Hz)
+% Filter characteristics: Eliminate Mains frequencies (50 Hz)
 up.paramSet.elim_mains.fcuts = [41, 47.2, 52.8, 59];  % in HZ (41, 47.2, 52.8, 59 provide a -3 dB cutoff of 45-55 Hz)
 up.paramSet.elim_mains.Dpass = 0.05;
 up.paramSet.elim_mains.Dstop = 0.01;
-
-% Eliminate HFs (above resp freqs)
+% Filter characteristics: Eliminate HFs (above resp freqs)
 up.paramSet.elim_hf.Fpass = 1.2;  % in Hz
 up.paramSet.elim_hf.Fstop = 0.8899;  % in Hz     (1.2 and 0.8899 provide a -3dB cutoff of 1 Hz)
 up.paramSet.elim_hf.Dpass = 0.05;
 up.paramSet.elim_hf.Dstop = 0.01;
-% Eliminate LFs (below cardiac freqs): For 30bpm cutoff
+% Filter characteristics: Eliminate LFs (below cardiac freqs): For 30bpm cutoff
 up.paramSet.elim_sub_cardiac.Fpass = 0.63;  % in Hz
 up.paramSet.elim_sub_cardiac.Fstop = 0.43;  % in Hz     (0.63 and 0.43 provide a - 3dB cutoff of 0.5 Hz)
 up.paramSet.elim_sub_cardiac.Dpass = 0.05;
 up.paramSet.elim_sub_cardiac.Dstop = 0.01;
-% Eliminate VLFs (below resp freqs): For 4bpm cutoff
+% Filter characteristics: Eliminate VLFs (below resp freqs): For 4bpm cutoff
 up.paramSet.elim_vlf.Fpass = 0.157;  % in Hz
 up.paramSet.elim_vlf.Fstop = 0.02;   % in Hz     (0.157 and 0.02 provide a - 3dB cutoff of 0.0665 Hz)
 up.paramSet.elim_vlf.Dpass = 0.05;
 up.paramSet.elim_vlf.Dstop = 0.01;
-% duration of Tukey window taper in secs
+% Filter characteristics: duration of Tukey window taper in secs
 up.paramSet.tukey_win_duration_taper = 2;
-% QRS detection wins in secs
-up.paramSet.qrs_detect.win_length = 10;
-up.paramSet.qrs_detect.win_overlap = 5;
 
 % frequency at which to resample feature-based respiratory signals
 up.paramSet.resample_fs = 5;
 % frequency at which to sample filter-based respiratory signals
 up.paramSet.filt_resample_fs = 25;
 
-% CWT parameters
+% Plausible range of HRs [bpm]
 up.paramSet.hr_range = [30, 220];
 
-% RR estimation specifications
-% Range of plausible RR freqs
+% Plausible range of plausible RRs [bpm]
 up.paramSet.rr_range = [4 60];
+
 % AR model order
 up.paramSet.ar_model_order = 8;
 up.paramSet.ar_resample_freq = 5;
+
 % FFT downsample freq
 up.paramSet.fft_resample_freq = 5;
-% Ref RR threshold
-up.paramSet.resp_sig_thresh.sum_both = 0.60; % thresh for use of paw and imp combined
-up.paramSet.resp_sig_thresh.imp = 0.1; % thresh for use of imp  (just a single imp, not 2*imp)
-up.paramSet.resp_sig_thresh.paw = 0.42; % thresh for use of paw (just a single paw, not 2*paw)
-up.paramSet.resp_filter_roll_off = 1+(1/3);
-% Paw SNR
-up.paramSet.paw_snr_thresh = -8;
-% Reference RR method
-up.paramSet.ref_rr_method = 'paw_thresh'; % For Vortal: sum_both_thresh, imp_thresh, paw_thresh; For MIMIC: comb_imp; For CAPNOBASE: co2_zex
-%up.paramSet.ref_rr_method = 'timings';
-up.paramSet.ref_rr_method = 'comb_imp';
-% Impedance RR methods
-up.paramSet.imp_rr_method = 'num';   % num or thresh
 
 % decide whether or not to redo stats
 up.analysis.redo_stats = 1;
+
+% QRS detection windows in secs
+up.paramSet.qrs_detect.win_length = 10;
+up.paramSet.qrs_detect.win_overlap = 5;
 
 % PPG Peak Detector specifications
 % CO
@@ -313,19 +274,43 @@ up.paramSet.CO_peak_det.PPG_smoother.details = smooth_filt.details;
 up.paramSet.CO_peak_det.upctl = 0.9;
 up.paramSet.CO_peak_det.lpctl = 0.1;
 
-% DClifton
-opts.delta_fraction = 0.75;
-opts.delta_median_window = 5;
-opts.delta_decay_time = 10;     % Was originally on 100, changed to include early peaks in time series (as the first few mins of the Paw signal weren't being picked up).
-opts.delta_decay_factor = 0.5;
-opts.delta_minimum = 0.2;
-opts.init_window_size = 50;
-opts.init_buffer_size = 1800000;
-opts.delta_decay_time = 50;
-opts.delta_fraction = 1;
-up.paramSet.DClifton_opts = opts; clear opts
+% Determine how to obtain reference RRs:
+ref_fields = fieldnames(data(1).ref);
+if sum(strcmp(ref_fields, 'resp_sig')) && sum(strcmp(fieldnames(data(1).ref.resp_sig), 'paw'))
+    up.paramSet.ref_method = 'paw';
+elseif sum(strcmp(ref_fields, 'resp_sig')) && sum(strcmp(fieldnames(data(1).ref.resp_sig), 'imp'))
+    up.paramSet.ref_method = 'imp';
+elseif sum(strcmp(ref_fields, 'breaths'))
+    up.paramSet.ref_method = 'breaths';
+elseif sum(strcmp(ref_fields, 'params')) && sum(strcmp(fieldnames(data(1).ref.params, 'rr')))
+    up.paramSet.ref_method = 'rrs';
+end
 
-%% save universal params file
+% Determine whether to calculate stats for impedance:
+if sum(strcmp(fieldnames(data(1).ref), 'params')) && sum(strcmp(fieldnames(data(1).ref.params), 'rr')) ...
+        && sum(strcmp(fieldnames(data(1).ref.params), 'rr'))
+    up.analysis.imp_stats = true;
+end
+clear data
+
+% Ref RR threshold
+up.paramSet.resp_sig_thresh.paw = 0.42;                                     % thresh for use of paw (just a single paw, not 2*paw)
+up.paramSet.resp_filter_roll_off = 1+(1/3);
+
+% Paw SNR
+up.paramSet.paw_snr_thresh = -8;
+
+% Reference RR method
+up.paramSet.ref_rr_method = 'paw_thresh';                                   % For Vortal: sum_both_thresh, imp_thresh, paw_thresh; For MIMIC: comb_imp; For CAPNOBASE: co2_zex
+
+% Impedance RR methods
+up.paramSet.imp_rr_method = 'num';   % num or thresh
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% SAVE UNIVERSAL PARAMETERS %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 save(up_path, 'up');
 
 end

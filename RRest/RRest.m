@@ -53,21 +53,25 @@ function RRest(period)
 % The universal parameters are used throughout the algorithms
 up = setup_universal_params(period);
 
-%% Estimate RRs from ECG and PPG
-% Carry out processing for each stage of the algorithms
-for key_comp_no = 1 : length(up.al.key_components)
-    feval(up.al.key_components{key_comp_no}, up);
+if up.analysis.run_analysis
+    
+    %% Estimate RRs from ECG and PPG
+    % Carry out processing for each stage of the algorithms
+    for key_comp_no = 1 : length(up.al.key_components)
+        feval(up.al.key_components{key_comp_no}, up);
+    end
+    
+    %% Conduct Signal Quality Assessment of Signals
+    % Each window of ECG and PPG is quality assessed
+    calculate_sqi(up);
+    
+    %% Estimate Reference RRs
+    estimate_ref_rr(up);
+    
 end
 
-%% Conduct Signal Quality Assessment of Signals
-% Each window
-calculate_sqi(up);
-
-%% Estimate Reference RRs
-estimate_ref_rr(up);
-
 %% Statistical Analysis
-calc_stats4(up);
+calc_stats(up);
 create_table_of_algorithms(up);
 
 end
