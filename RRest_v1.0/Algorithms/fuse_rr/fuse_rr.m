@@ -35,12 +35,17 @@ for subj = up.paramSet.subj_list
             part2 = temp.aft{fusable_rr_est_no};
             eval(['save_name = ''' part1, '_', part2, '_', rel_sub_comps{sub_comp_no} ''';']);
             savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts, '.mat'];
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
+            
             % load data if it hasn't yet been loaded
             if ~loaded_this_subj_rr_ests
                 rrEsts = load([up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts]);
                 loaded_this_subj_rr_ests = 1;
             end
+            
             % Identify relevant data
             feat_mods = {'bw', 'am', 'fm'};
             filt_mods = {'ARb', 'ARa', 'ARf'};
@@ -87,7 +92,10 @@ if sum(strcmp(up.al.options.fuse_rr, 'fus_temp'))
             for fusable_rr_est_no = 1:length(temp)
                 eval(['save_name = ''' temp{fusable_rr_est_no}, '_', rel_sub_comps{sub_comp_no} ''';']);
                 savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts, '.mat'];
-                check_exists
+                exist_log = check_exists(savepath, save_name);
+                if exist_log
+                    continue
+                end
                 % load data if it hasn't yet been loaded
                 if ~loaded_this_subj_rr_ests
                     rrEsts = load([up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts]);

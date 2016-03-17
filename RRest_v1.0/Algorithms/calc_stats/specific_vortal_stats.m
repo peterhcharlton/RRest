@@ -3,7 +3,10 @@ function specific_vortal_stats(up)
 save_name = 'vortal_results';
 savepath = [up.paths.data_save_folder, up.paths.filenames.vortal_results, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Performing algorithm ranking analyses');

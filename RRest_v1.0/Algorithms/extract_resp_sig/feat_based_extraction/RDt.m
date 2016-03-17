@@ -24,7 +24,10 @@ for subj = up.paramSet.subj_list
     for rel_var_name_no = 1 : length(rel_var_names)
         for current_opt_no = 1 : length(up.al.options.RDt)
             eval(['save_name = ''' option(1:3), up.paths.filenames.qrss, up.al.options.RDt{current_opt_no}, rel_var_names{rel_var_name_no}(4:end) ''';']);
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
             
             %% Load relevant data
             loadpath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.int_respSigs];

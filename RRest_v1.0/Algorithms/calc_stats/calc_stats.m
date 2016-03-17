@@ -63,7 +63,10 @@ function create_table_win_data_imp(up)
 save_name = up.paths.filenames.win_data;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_imp, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Creating a Table of Impedance Results for each window ');
@@ -174,7 +177,10 @@ function calc_study_and_sub_group_stats_imp(up)
 save_name = 'BA_results';
 savepath = [up.paths.data_save_folder, up.paths.filenames.imp_BA, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Performing BA analyses for entire cohort and sub-groups ');
@@ -305,6 +311,9 @@ for group_no = 1 : length(group_names)
         BA.prec.lci(alg_no) = BA.prec.val(alg_no) - (2*std_err_lim*tval);
         BA.prec.uci(alg_no) = BA.prec.val(alg_no) + (2*std_err_lim*tval);
         
+        % calculate 2SD
+        BA.two_sd.val(alg_no) = 2*sqrt(total_variance);
+        
     end
     
     eval(['BA_results.' group_name '= BA;']);
@@ -353,7 +362,10 @@ function rename_algorithms(up)
 save_name = up.paths.filenames.alg_names;
 savepath = [up.paths.data_save_folder, up.paths.filenames.alg_names, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Renaming Algorithms ');
@@ -504,7 +516,10 @@ function create_table_win_data(up)
 save_name = up.paths.filenames.win_data;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Creating a Table of Results for each window ');
@@ -620,7 +635,10 @@ function calc_study_and_sub_group_stats(up)
 save_name = 'BA_results';
 savepath = [up.paths.data_save_folder, up.paths.filenames.global_BA, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Performing BA analyses for entire cohort and sub-groups ');
@@ -751,6 +769,9 @@ for group_no = 1 : length(group_names)
         BA.prec.lci(alg_no) = BA.prec.val(alg_no) - (2*std_err_lim*tval);
         BA.prec.uci(alg_no) = BA.prec.val(alg_no) + (2*std_err_lim*tval);
         
+        % calculate 2SD
+        BA.two_sd.val(alg_no) = 2*sqrt(total_variance);
+        
     end
     
     eval(['BA_results.' group_name '= BA;']);
@@ -769,7 +790,10 @@ fprintf('\n--- Calculating Statistics for Synthetic Data');
 save_name = 'synth_results';
 savepath = [up.paths.data_save_folder, up.paths.filenames.synth_results, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 % load win_data
@@ -1132,7 +1156,10 @@ function copy_renamed_algorithms(up)
 save_name = up.paths.filenames.alg_names;
 savepath = [up.paths.data_save_folder, up.paths.filenames.alg_names, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Copying Renamed Algorithms ');
@@ -1153,7 +1180,10 @@ function create_table_win_data_merged_imp(up)
 save_name = up.paths.filenames.win_data;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_imp, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Creating a Table of Results for each window ');
@@ -1289,7 +1319,10 @@ function create_table_win_data_merged(up)
 save_name = up.paths.filenames.win_data;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Creating a Table of Results for each window ');
@@ -1459,7 +1492,10 @@ function calc_trad_stats(up)
 save_name = 'stats';
 savepath = [up.paths.data_save_folder, up.paths.filenames.study_stats, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Calculating Traditional Stats');
@@ -1628,7 +1664,10 @@ function create_table_win_data_merged_raw_clin(up)
 save_name = up.paths.filenames.win_data_raw_clin;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_raw_clin, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Merging Tables of Results for Raw and Clinical data');
@@ -1714,7 +1753,10 @@ function create_table_win_data_merged_raw_clin_imp(up)
 save_name = up.paths.filenames.win_data_raw_clin_imp;
 savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_raw_clin_imp, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 fprintf('\n--- Merging Tables of Results for Raw and Clinical data');
@@ -2039,6 +2081,9 @@ for group_no = 1 : length(groups)
         BA.prec.lci(alg_no) = BA.prec.val(alg_no) - (2*std_err_lim*tval);
         BA.prec.uci(alg_no) = BA.prec.val(alg_no) + (2*std_err_lim*tval);
         
+        % calculate 2SD
+        BA.two_sd.val(alg_no) = 2*sqrt(total_variance);
+        
     end
     
     save_name = 'BA';
@@ -2069,7 +2114,10 @@ for group_no = 1 : length(groups)    % for each group (YHVs, EHVs, global)
         save_name = win_stats_analyses{global_stats_analysis_no}(1:3);
         savepath = [up.paths.data_save_folder, up.paths.filenames.group_stats, groups{group_no}, '.mat'];
         if ~up.analysis.redo_stats
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
         end
         
         % Load data from entire sample
@@ -2145,7 +2193,10 @@ for subj = up.paramSet.subj_list
         save_name = ['win_' win_stats_analyses{win_stats_analysis_no}];
         savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.stats, '.mat'];
         if ~up.analysis.redo_stats
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
         end
         
         %% Load estimated RRs for this subj:

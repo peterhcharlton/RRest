@@ -18,7 +18,10 @@ for subj = up.paramSet.subj_list
     % Skip if this processing has been done previously
     save_name = 'rr_ref';
     savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.ref_rrs, '.mat'];
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
     
     %% Load window timings
     loadpath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.win_timings, '.mat'];

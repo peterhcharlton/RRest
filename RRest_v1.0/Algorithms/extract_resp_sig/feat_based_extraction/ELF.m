@@ -30,7 +30,10 @@ for subj = up.paramSet.subj_list
     rel_var_names = var_names(logical(rel_log));
     for rel_var_name_no = 1 : length(rel_var_names)
         eval(['save_name = ''' option(1:3), up.paths.filenames.elim_vlf2, rel_var_names{rel_var_name_no}(4:end) ''';']);
-        check_exists
+        exist_log = check_exists(savepath, save_name);
+        if exist_log
+            continue
+        end
         
         %% Load relevant data
         rel_name = rel_var_names{rel_var_name_no};

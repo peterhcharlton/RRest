@@ -15,7 +15,10 @@ for subj = up.paramSet.subj_list
     eval(['save_name = ''' option(1:3), up.paths.filenames.elim_vhf ''';']);
     iden_resp_sig_file_ending
     savepath = [up.paths.data_save_folder, num2str(subj), ending];
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
     
     %% Load relevant data
     if ~exist('data', 'var')

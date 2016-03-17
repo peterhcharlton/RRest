@@ -42,7 +42,10 @@ for subj = up.paramSet.subj_list
             end
             
             eval(['save_name = ''' option(1:3), up.paths.filenames.feat_meas, up.al.options.FMe{current_opt_no}, rel_var_names{rel_var_name_no}(4:end) ''';']);
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
             
             %% Load relevant data
             

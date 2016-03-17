@@ -3,7 +3,10 @@ function specific_vortal_plots(up)
 save_name = up.paths.filenames.hr_rr_scatter;
 savepath = [up.paths.plots_save_folder, up.paths.filenames.hr_rr_scatter, '.eps'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 %% Make plot of feature vs filter resp sigs

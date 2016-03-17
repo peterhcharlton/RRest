@@ -49,10 +49,6 @@ up.paths.slash_direction = '\';     % usually a backslash for Windows, forward s
 % "DATASETNAME" is the name of the dataset being analysed, e.g. "MIMICII".
 up.paths.root_folder = 'C:\Documents\Data\';
 
-% specify path of the folder in which to store results figures. This can be
-% wherever you like.
-up.paths.paper_figures_folder = 'C:\Users\pc13\Dropbox\VORTAL\VORTAL_theoret_lims_yhvs\Figures\';   % in which to save eps figures for direct import into publication.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% LOAD PREVIOUS UNIVERSAL PARAMETERS %%%%%%%%
 %%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%
@@ -84,7 +80,7 @@ fprintf('\n--- Creating Universal Parameters ');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Specify the stages of the algorithms (best left alone):
-up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};     %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
+up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};      %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
 % Specify methods for extraction of respiratory signals (feature / filter, ecg / ppg):
 up.al.options.extract_resp_sig = {'ppg_feat', 'ekg_feat'};
 % Specify the components for feature-based extraction of respiratory signals:
@@ -186,6 +182,10 @@ data_new_path = [up.paths.data_load_folder, up.paths.data_load_filename, '.mat']
 if exist(data_orig_path, 'file')
     copyfile(data_orig_path, data_new_path);
 end
+
+% path of the folder in which to store results figures. This can be
+% wherever you like.
+up.paths.paper_figures_folder = up.paths.plots_save_folder;   % in which to save eps figures for direct import into publication.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% ANALYSIS PARAMETERS %%%%%%%%%%%%%%%%%%%

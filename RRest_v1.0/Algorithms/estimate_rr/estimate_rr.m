@@ -34,7 +34,10 @@ for subj = up.paramSet.subj_list
             % Skip if this processing has been done previously
             save_name = [ respSigs{respSig_no} '_' up.al.options.estimate_rr{option_no} ];
             savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts, '.mat'];
-            check_exists
+            exist_log = check_exists(savepath, save_name);
+            if exist_log
+                continue
+            end
             
             % load data if it hasn't yet been loaded
             if ~loaded_this_subj_respSigs

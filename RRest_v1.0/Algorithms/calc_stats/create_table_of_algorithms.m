@@ -16,7 +16,10 @@ fprintf('\n--- Creating Results Tables ');
 save_name = up.paths.filenames.results_table;
 savepath = [up.paths.tables_save_folder, save_name, '.mat'];
 if ~up.analysis.redo_stats
-    check_exists
+    exist_log = check_exists(savepath, save_name);
+    if exist_log
+        continue
+    end
 end
 
 % Load BA Data
@@ -99,7 +102,7 @@ tab_vars.signal = alg_names.sigs;
 % Extract relevant statistics for table:
 if strcmp(type, 'BA')
     tab_vars.bias = rel_data.BA.bias.val;
-    tab_vars.precision = rel_data.BA.prec.val;
+    tab_vars.two_sd = rel_data.BA.two_sd.val;
     tab_vars.prop_wins_est = rel_data.stats.prop_wins_est;
     tab_vars.prop_wins_ref_and_good_sqi = rel_data.stats.prop_wins_good_sqi_and_ref;
 elseif strcmp(type, 'stats')
