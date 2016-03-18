@@ -14,6 +14,8 @@ function MIMICII_data_importer
 %       specified by "up.paths.analysis_path".
 %
 %   Requirements:
+%       This requires the WFDB Toolbox, which can be downloaded from:
+%           https://physionet.org/physiotools/matlab/wfdb-app-matlab/
 %       data download is performed automatically using the script below.
 %           
 %   Further Information:
@@ -41,7 +43,7 @@ function MIMICII_data_importer
 up = universal_parameters;
 
 %% Download data
-download_data(up);
+%download_data(up);
 
 %% Identify patient stays
 pt_stays = identify_pt_stays(up); 
@@ -69,6 +71,7 @@ fprintf('\n -- Setting up Universal Parameters')
 
 % Specify the root data directory (where the data will be stored)
 up.paths.data_root = 'C:\Documents\Data\mimicii\';
+up.paths.data_save_folder = 'C:\Documents\Data\';
 
 % Specify the web address of the data to be downloaded
 rel_database = 'mimic2wdb';
@@ -97,7 +100,7 @@ end
 up.extraction.period = 600;    % period of waveform data to extract (in s)
 up.extraction.rel_sigs = {'II', 'PLETH', 'RESP'};    % required signals
 up.extraction.rel_nums = {'HR', 'PULSE', 'RESP'};    % required numerics
-up.no_pt_stays = 5;
+up.no_pt_stays = 100;
 
 % database definitions
 up.mimic_db.version = 3;
@@ -127,6 +130,11 @@ for req_folder_no = 1 : length(req_folders)
         end
         mkdir(curr_folder)
     end
+end
+
+% Check that the WFDB Matlab Toolbox has been installed
+if ~exist('getWfdbClass', 'file')
+    error('Couldn''t find the WFDB Matlab Toolbox. Please install as described at the top of the file.')
 end
 
 end
@@ -578,14 +586,14 @@ for subj_el = 1:length(old_data)
 end
 
 % Save to file
-save([up.paths.data_root, 'mimiciidata'], 'data')
+save([up.paths.data_save_folder, 'mimicii_data'], 'data')
 
 end
 
 function results = sub_group_identification(up)
 
 %% Load data
-load([up.paths.data_root, 'mimiciidata'], 'data')
+load([up.paths.data_save_folder, 'mimicii_data'], 'data')
 
 %% Split into sub-groups and identify data for each
 sub_group = zeros(length(data),1);   % zero for neonates, one for adults

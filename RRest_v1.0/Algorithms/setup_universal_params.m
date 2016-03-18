@@ -82,7 +82,7 @@ fprintf('\n--- Creating Universal Parameters ');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Specify the stages of the algorithms (best left alone):
-up.al.key_components = {'estimate_rr', 'fuse_rr'};      %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
+up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};      %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
 % Specify methods for extraction of respiratory signals (feature / filter, ecg / ppg):
 up.al.options.extract_resp_sig = {'ppg_feat', 'ekg_feat'};
 % Specify the components for feature-based extraction of respiratory signals:
