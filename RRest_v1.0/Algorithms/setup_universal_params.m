@@ -54,6 +54,8 @@ up.paths.root_folder = 'C:\Documents\Data\';
 %%%%%%%%%%%%%%%% (no editing required) %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Provide licence details
+provide_licence_details
 % set current directory to that of this file
 cd(fileparts(mfilename('fullpath')))
 % Add all functions corresponding to options for each component to the path
@@ -324,5 +326,16 @@ up.paramSet.imp_rr_method = 'num';   % num or thresh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save(up_path, 'up');
+
+end
+
+function provide_licence_details
+
+licence_details = ['\n\n RRest  Copyright (C) 2016  Peter H. Charlton', ...
+    '\n This program comes with ABSOLUTELY NO WARRANTY', ... 
+    '\n and is available under the GNU public license.', ...
+    '\n For details see the accompanying LICENSE.txt file.\n\n'];
+
+fprintf(licence_details)
 
 end
