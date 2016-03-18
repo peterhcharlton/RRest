@@ -11,6 +11,8 @@ if exist(savepath, 'file')
     else
         exist_log = false;
     end
+else
+    exist_log = false;
 end
 
 end

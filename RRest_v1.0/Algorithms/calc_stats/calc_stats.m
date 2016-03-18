@@ -383,6 +383,8 @@ for alg_no = 1 : length(old_names)
     % setup
     rel_name = old_names{alg_no};
     
+    rel_name = strrep(rel_name, 'GCE', 'TPE');
+    
     % Eliminate fixed components
     rel_name = strrep(rel_name, 'ELF', '');
     rel_name = strrep(rel_name, 'FPt', '');

@@ -32,7 +32,11 @@ for subj = up.paramSet.subj_list
     for respSig_no = 1:length(respSigs)
         for option_no = 1 : length(up.al.options.estimate_rr)
             % Skip if this processing has been done previously
-            save_name = [ respSigs{respSig_no} '_' up.al.options.estimate_rr{option_no} ];
+            if strcmp(up.al.options.estimate_rr{option_no}, 'GCE')
+                save_name = [ respSigs{respSig_no}(1:3) '_' up.al.options.estimate_rr{option_no} ];
+            else
+                save_name = [ respSigs{respSig_no} '_' up.al.options.estimate_rr{option_no} ];
+            end
             savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.rrEsts, '.mat'];
             exist_log = check_exists(savepath, save_name);
             if exist_log
@@ -49,6 +53,8 @@ for subj = up.paramSet.subj_list
             end
             % Identify the relevant respSig data
             eval(['rel_data = ' respSigs{respSig_no} ';']);
+            rel_data.subj = subj;
+            rel_data.respSig = respSigs{respSig_no};
             %% Calculate RR from this resp sig using each option for estimating RR
             if (length(rel_data.t) == 1 && isnan(rel_data.t)) || sum(isnan(rel_data.v))==length(rel_data.v)
                 temp_rr.t = mean([wins.t_start(:)' ; wins.t_end(:)']); temp_rr.t = temp_rr.t(:);
@@ -57,7 +63,12 @@ for subj = up.paramSet.subj_list
                 temp_rr = feval(up.al.options.estimate_rr{option_no}, rel_data, wins, up);
             end
             % store this series of rrs:
-            eval([respSigs{respSig_no} '_' up.al.options.estimate_rr{option_no} ' = temp_rr;']);
+            if strcmp(up.al.options.estimate_rr{option_no}, 'GCE')
+                eval([respSigs{respSig_no}(1:3) '_' up.al.options.estimate_rr{option_no} ' = temp_rr;']);
+            else
+                eval([respSigs{respSig_no} '_' up.al.options.estimate_rr{option_no} ' = temp_rr;']);
+            end
+            
             clear temp_rr
             %% Save RRs to file
             save_or_append_data
