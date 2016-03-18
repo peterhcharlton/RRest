@@ -18,7 +18,7 @@ savepath = [up.paths.tables_save_folder, save_name, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -33,7 +33,7 @@ loadpath = [up.paths.data_save_folder, up.paths.filenames.alg_names, '.mat'];
 load(loadpath, load_name);
 
 % Load study data
-load_name = 'stats';
+load_name = 'trad_stats';
 loadpath = [up.paths.data_save_folder, up.paths.filenames.study_stats, '.mat'];
 load(loadpath, load_name);
 
@@ -46,7 +46,7 @@ for group_no = 1 : length(groups)
     group = groups{group_no};
     
     %% Extract relevant data
-    rel_data = extract_rel_data(group, BA_results, stats, up);
+    rel_data = extract_rel_data(group, BA_results, trad_stats, up);
     
     %% Make Table of BA Results
     BA_results_table = create_table_results(alg_names, rel_data, up, group, 'BA');

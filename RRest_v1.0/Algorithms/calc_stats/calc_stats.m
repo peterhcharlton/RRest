@@ -65,7 +65,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_imp, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -179,7 +179,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.imp_BA, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -203,7 +203,7 @@ groups.entire = true(length(win_data.subj),1);
 for group_no = 1 : length(group_names)
     eval(['groups.' group_names{group_no} ' = win_data.' group_names{group_no} '_log;']);
 end
-groups.low_qual = ~win_data.sqi;
+%groups.low_qual = ~win_data.sqi;
 
 %% remove these groups for the moment
 include_extra_groups = 0;
@@ -364,7 +364,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.alg_names, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -518,7 +518,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -637,7 +637,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.global_BA, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -661,7 +661,7 @@ groups.entire = true(length(win_data.subj),1);
 for group_no = 1 : length(group_names)
     eval(['groups.' group_names{group_no} ' = win_data.' group_names{group_no} '_log;']);
 end
-groups.low_qual = ~win_data.sqi;
+%groups.low_qual = ~win_data.sqi;
 
 %% remove these groups for the moment
 include_extra_groups = 0;
@@ -792,7 +792,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.synth_results, '.mat']
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1158,7 +1158,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.alg_names, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1182,7 +1182,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_imp, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1321,7 +1321,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1489,12 +1489,12 @@ end
 
 function calc_trad_stats(up)
 
-save_name = 'stats';
+save_name = 'trad_stats';
 savepath = [up.paths.data_save_folder, up.paths.filenames.study_stats, '.mat'];
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1515,7 +1515,7 @@ subjs = up.paramSet.subj_list;
 rel_els = find_rel_subjs(up);
 groups = fieldnames(rel_els);
 groups{end+1} = 'entire';
-groups{end+1} = 'low_qual';
+%groups{end+1} = 'low_qual';                                                % uncomment to look at the low quality windows
 
 for group_no = 1 : length(groups)
     
@@ -1584,7 +1584,7 @@ for group_no = 1 : length(groups)
         
         % store each statistic
         for stat = {'percerr', 'mae', 'sdae', 'rmse', 'prop_wins_good_sqi', 'prop_wins_ref', 'prop_wins_est', 'prop_wins_all', 'prop_wins_good_sqi_and_ref', 'total_wins_alg', 'total_wins_good_sqi', 'total_wins_ref', 'total_wins_est', 'total_wins_est', 'total_wins_all', 'total_wins_good_sqi_and_ref', 'prop_acc', 'mean_diff', 'std_diff', 'mean_ref_rr'}
-            eval(['stats.' groups{group_no} '.' stat{1,1} '(alg_no) = ' stat{1,1} ';']);
+            eval(['trad_stats.' groups{group_no} '.' stat{1,1} '(alg_no) = ' stat{1,1} ';']);
         end
         
     end
@@ -1666,7 +1666,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_raw_clin, '.m
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
@@ -1755,7 +1755,7 @@ savepath = [up.paths.data_save_folder, up.paths.filenames.win_data_raw_clin_imp,
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 

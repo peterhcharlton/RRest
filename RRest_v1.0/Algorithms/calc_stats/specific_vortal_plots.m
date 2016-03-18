@@ -5,7 +5,7 @@ savepath = [up.paths.plots_save_folder, up.paths.filenames.hr_rr_scatter, '.eps'
 if ~up.analysis.redo_stats
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        return
     end
 end
 
