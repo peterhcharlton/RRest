@@ -14,10 +14,7 @@ function MIMICII_data_importer
 %       specified by "up.paths.analysis_path".
 %
 %   Requirements:
-%       data download is performed automatically using the script below. It
-%       uses "wget.exe", which you must have in the "up.paths.data_root"
-%       directory. To do so, install "wget" (e.g. from http://gnuwin32.sourceforge.net/packages/wget.htm)
-%       and copy "wget.exe" into the "up.paths.data_root" directory.
+%       data download is performed automatically using the script below.
 %           
 %   Further Information:
 %       This version of the MIMICII_data_importer is provided to facilitate
@@ -44,8 +41,7 @@ function MIMICII_data_importer
 up = universal_parameters;
 
 %% Download data
-% You must have "wget.exe" in the "up.paths.data_root" directory for this to work. 
-%download_data(up);
+download_data(up);
 
 %% Identify patient stays
 pt_stays = identify_pt_stays(up); 
@@ -65,7 +61,11 @@ end
 
 function up = universal_parameters
 
+fprintf('\n -- Setting up Universal Parameters')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Specify the root data directory (where the data will be stored)
 up.paths.data_root = 'C:\Documents\Data\mimicii\';
@@ -89,12 +89,15 @@ if up.eps_figs
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%   OTHER PARAMETERS   %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%   (don't need editing)   %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % extraction definitions
 up.extraction.period = 600;    % period of waveform data to extract (in s)
 up.extraction.rel_sigs = {'II', 'PLETH', 'RESP'};    % required signals
 up.extraction.rel_nums = {'HR', 'PULSE', 'RESP'};    % required numerics
-up.no_pt_stays = 100;
+up.no_pt_stays = 5;
 
 % database definitions
 up.mimic_db.version = 3;
@@ -104,9 +107,27 @@ up.mimic_db.part = 0;
 up.paths.file_location = [up.paths.data_root, 'physionet.org\physiobank\database\', rel_database, '\', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '\'];
 up.paths.analysis_path = [up.paths.data_root, 'Analysis_files', slash 'Data_for_Analysis', slash ];
 up.paths.plots = [up.paths.data_root, 'Analysis_files', slash 'Results', slash 'Figures', slash ];
+up.paths.records_filepath = [up.paths.analysis_path, 'RECORDS'];
+
+% url paths
+up.paths.url.records = [up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/', 'RECORDS'];
 
 % Add all functions within the directory
 addpath(genpath(fileparts(mfilename('fullpath'))));
+
+% check that all the required folders exist. If not, create them:
+req_folders = {up.paths.data_root, up.paths.analysis_path, up.paths.plots};
+displayed_msg = 0;
+for req_folder_no = 1 : length(req_folders)
+    curr_folder = req_folders{req_folder_no};
+    if ~exist(curr_folder, 'dir')
+        if displayed_msg == 0
+            fprintf('\n -- Creating folder in which to store data and analysis')
+            displayed_msg = 1;
+        end
+        mkdir(curr_folder)
+    end
+end
 
 end
 
@@ -118,15 +139,11 @@ fprintf('\n -- Downloading Data')
 cd(up.paths.data_root)
 
 %% Find out what records are available:
-% form a string command to use with wget
-str_cmd_root = ['wget -nv -np ', up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/'];
-str_cmd = [str_cmd_root, 'RECORDS'];
-
 % download list of records
-system(str_cmd);
+outfilename = websave(up.paths.records_filepath,up.paths.url.records);
 
 % form list of records from downloaded file
-records = load([up.paths.data_root, 'RECORDS']);
+records = load(up.paths.records_filepath);
 
 %% Download each record
 rel_records = records(1:up.no_pt_stays);
@@ -137,37 +154,41 @@ for rec_no = 1 : length(rel_records)
     record = rel_records(rec_no);
     
     % specify download location
-    down_loc = [up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/', num2str(record), '/'];
+    down_loc = [up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/', num2str(record), '/', 'RECORDS'];
     
     % set save location
-    save_loc = [up.paths.file_location, num2str(record), '\'];
+    save_folder = [up.paths.file_location, num2str(record), '\'];
+    save_loc = [save_folder, 'RECORDS'];
+    if ~exist(save_folder, 'dir')
+        mkdir(save_folder)
+    end
     
     % download RECORDS file for this record
-    str_cmd = ['wget -nv -np -P ', save_loc, ' ', down_loc, 'RECORDS'];
-    system(str_cmd);
+    outfilename = websave(save_loc,down_loc);
     
     % find out what individual files are in this record:
-    fileID = fopen([save_loc, 'RECORDS']);
+    fileID = fopen(save_loc);
     file_names = textscan(fileID, '%s %*[^\n]'); file_names = file_names{1};
     fclose(fileID);
     
     for file_no = 1 : length(file_names)
         
-        
-        % header
-        str_cmd = ['wget -nv -np -P ', save_loc, ' ', down_loc, file_names{file_no}, '.hea'];
-        system(str_cmd);
+        % download header file
+        curr_file_name = [file_names{file_no}, '.hea'];
+        down_loc = [up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/', num2str(record), '/', curr_file_name];
+        save_loc = [save_folder, curr_file_name];
+        outfilename = websave(save_loc,down_loc);
         
         if ~strcmp(file_names{file_no}, num2str(record))
-            % data
-            str_cmd = ['wget -nv -np -P ', save_loc, ' ', down_loc, file_names{file_no}, '.dat'];
-            system(str_cmd);
+            % also download data file
+            curr_file_name = [file_names{file_no}, '.dat'];
+            down_loc = [up.paths.database_dir, '/', num2str(up.mimic_db.version), num2str(up.mimic_db.part), '/', num2str(record), '/', curr_file_name];
+            save_loc = [save_folder, curr_file_name];
+            outfilename = websave(save_loc,down_loc);
         end
     end
     
 end
-
-
 
 end
 
@@ -571,9 +592,9 @@ sub_group = zeros(length(data),1);   % zero for neonates, one for adults
 n_rrs = []; a_rrs = [];
 for s = 1 : length(data)
     if strcmp(data(1,s).group, 'neonate')
-        n_rrs = [n_rrs; data(1,s).reference.rr.v];
+        n_rrs = [n_rrs; data(1,s).ref.params.rr.v];
     else
-        a_rrs = [a_rrs; data(1,s).reference.rr.v];
+        a_rrs = [a_rrs; data(1,s).ref.params.rr.v];
         sub_group(s) = 1;
     end
 end
