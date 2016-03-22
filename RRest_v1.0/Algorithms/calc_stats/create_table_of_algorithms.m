@@ -110,7 +110,9 @@ elseif strcmp(type, 'stats')
     tab_vars.mae = rel_data.stats.mae;
     tab_vars.sdae = rel_data.stats.sdae;
     tab_vars.rmse = rel_data.stats.rmse;
+    tab_vars.cp2 = rel_data.stats.cp2;
     tab_vars.prop_wins_est = rel_data.stats.prop_wins_est;
+    tab_vars.total_wins_all = rel_data.stats.total_wins_all;
 end
 
 %% Determine what goes into the table

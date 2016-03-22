@@ -53,6 +53,7 @@ for subj = up.paramSet.subj_list
             end
             % Identify the relevant respSig data
             eval(['rel_data = ' respSigs{respSig_no} ';']);
+            % add current subject and resp sig for any methods that do not use a resp sig.
             rel_data.subj = subj;
             rel_data.respSig = respSigs{respSig_no};
             %% Calculate RR from this resp sig using each option for estimating RR

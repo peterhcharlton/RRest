@@ -97,7 +97,7 @@ up.al.options.RS = {'linB'};                                                % Po
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 % Specify the interchangeable technique(s) for RR Estimation
-up.al.options.estimate_rr = {'FTS', 'CtO', 'GCE'};
+up.al.options.estimate_rr = {'FTS', 'CtO'};
 % Different methods for fusion of RR estimates:
 up.al.options.fuse_rr = {'fus_mod'};                                        % Possible methods: 'fus_mod', 'fus_temp'
 % Components for each method of extraction of RR fusion:
@@ -213,7 +213,7 @@ up.paramSet.groups = extractfield(data, 'group');
 
 % window parameters
 up.paramSet.winLeng = 32;                                                   % the duration of each window in secs
-up.paramSet.winStep = 40;                                                    % the number of secs between each consecutive window
+up.paramSet.winStep = 0;                                                    % the number of secs between each consecutive window
 up.paramSet.buffer_period = 10;                                             % the number of secs to ignore at the start of each resp sig (since the filters might not have stabilised).
 
 % Filter characteristics: Eliminate VHFs (above frequency content of signals)

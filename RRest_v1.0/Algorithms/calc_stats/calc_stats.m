@@ -1556,6 +1556,9 @@ for group_no = 1 : length(groups)
         % RMSE
         rmse = sqrt(nanmean(error.^2));
         
+        % CP2
+        cp2 = sum(~isnan(error) & abs(error)<2)/sum(~isnan(error));
+        
         % Percentage Error
         mean_ref_rr = nanmean(win_data.ref(rel_rows));
         percerr = 100*nanmean(abs_error/mean_ref_rr);
@@ -1585,7 +1588,7 @@ for group_no = 1 : length(groups)
         prop_acc = sum(abs_error < 1)/sum(~isnan(abs_error));
         
         % store each statistic
-        for stat = {'percerr', 'mae', 'sdae', 'rmse', 'prop_wins_good_sqi', 'prop_wins_ref', 'prop_wins_est', 'prop_wins_all', 'prop_wins_good_sqi_and_ref', 'total_wins_alg', 'total_wins_good_sqi', 'total_wins_ref', 'total_wins_est', 'total_wins_est', 'total_wins_all', 'total_wins_good_sqi_and_ref', 'prop_acc', 'mean_diff', 'std_diff', 'mean_ref_rr'}
+        for stat = {'percerr', 'mae', 'sdae', 'rmse', 'cp2', 'prop_wins_good_sqi', 'prop_wins_ref', 'prop_wins_est', 'prop_wins_all', 'prop_wins_good_sqi_and_ref', 'total_wins_alg', 'total_wins_good_sqi', 'total_wins_ref', 'total_wins_est', 'total_wins_est', 'total_wins_all', 'total_wins_good_sqi_and_ref', 'prop_acc', 'mean_diff', 'std_diff', 'mean_ref_rr'}
             eval(['trad_stats.' groups{group_no} '.' stat{1,1} '(alg_no) = ' stat{1,1} ';']);
         end
         

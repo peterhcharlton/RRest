@@ -43,7 +43,7 @@ function MIMICII_data_importer
 up = universal_parameters;
 
 %% Download data
-%download_data(up);
+download_data(up);
 
 %% Identify patient stays
 pt_stays = identify_pt_stays(up); 
