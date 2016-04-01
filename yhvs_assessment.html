@@ -33,10 +33,17 @@ Following this algorithms were applied to both the ECG and the PPG on the <a hre
 
 This study can be replicated as follows:
 <ol>
-<li>Download the data from the <a href="http://peterhcharlton.github.io/RRest/vortal_dataset.html">Vortal dataset</a>. You will need to download the data from young subjects lying supine both at rest and whilst recovering from intense exercise.
+<li>Download the data from the <a href="http://peterhcharlton.github.io/RRest/vortal_dataset.html">Vortal dataset</a>. You will need to download the data from young subjects both at rest and recovering from intense exercise (two data files).
 <li>Use Version 2 of the toolbox of <a href="http://peterhcharlton.github.io/RRest/algorithms.html">algorithms</a>. Perform the analysis on the data at rest, and whilst recovering from exercise, by calling the main script using the following Matlab commands: (i) <i>RRest('vortal_rest')</i>   , and (ii) <i>RRest('vortal_rec')</i></li>
 <li>Combine the results of these two analyses by using the following Matlab command: <i>RRest('vortal_rest_and_rec')</i> </li>
 </ol>
+
+In addition, verification of algorithm implementations can be replicated as follows:
+<ol>
+<li>Download the data from the <a href="http://peterhcharlton.github.io/RRest/synthetic_dataset.html">Synthetic dataset</a>.</li>
+<li>Use Version 2 of the toolbox of <a href="http://peterhcharlton.github.io/RRest/algorithms.html">algorithms</a>. Call the main script using the following Matlab command: <i>RRest('rrsynth')</i></li>
+</ol>
+
 
 
       <footer class="site-footer">
