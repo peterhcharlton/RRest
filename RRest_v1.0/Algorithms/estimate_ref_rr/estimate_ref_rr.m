@@ -20,7 +20,7 @@ for subj = up.paramSet.subj_list
     savepath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.ref_rrs, '.mat'];
     exist_log = check_exists(savepath, save_name);
     if exist_log
-        continue
+        %continue
     end
     
     %% Load window timings
@@ -68,6 +68,7 @@ for subj = up.paramSet.subj_list
         rr_ref.v = nan(length(wins.t_start),1);
         rr_ref.snr_log = false(length(wins.t_start),1);
         % cycle through each window
+        breath_times = [];
         for win_no = 1 : no_wins
                 % select data for this window
                 rel_els = find(lpf_sig.t >= wins.t_start(win_no) & lpf_sig.t <= wins.t_end(win_no));
@@ -86,10 +87,12 @@ for subj = up.paramSet.subj_list
                 rel_sig.fs = downsample_freq;
                 clear rel_data interp_data
                 % Identify positive gradient threshold-crossings
-                [rr_ref.v(win_no), rr_ref.snr_log(win_no)] = pos_grad_thresh(rel_sig, wins, win_no, up);
+                [rr_ref.v(win_no), rr_ref.snr_log(win_no), temp_breath_times] = pos_grad_thresh(rel_sig, wins, win_no, up);
                 rr_ref.t = temp_t;
+                % store breath times
+                breath_times =[breath_times; temp_breath_times(:)];
                 
-                clear rel_sig breath_times ave_breath_duration win_breaths el sig downsample_freq rel_els rel_paw rel_imp
+                clear rel_sig ave_breath_duration win_breaths el sig downsample_freq rel_els rel_paw rel_imp
                     
 %                 if ~isempty(strfind(up.paths.data_load_filename, 'LISTEN'))
 %                     
@@ -146,7 +149,8 @@ for subj = up.paramSet.subj_list
         
         %% Save ref RRs to file
         save_or_append_data
-        clear rr_ref
+        master_breath_times{subj} = breath_times;
+        clear rr_ref breath_times
     end
     
     %% Find ref RRs from simultaneous impedance respiratory signal
@@ -325,7 +329,7 @@ lpf_sig.snr = sig.snr;
 
 end
 
-function [rr_ref_val, rr_ref_snr] = pos_grad_thresh(rel_sig, wins, win_no, up, sig_name)
+function [rr_ref_val, rr_ref_snr, breath_times] = pos_grad_thresh(rel_sig, wins, win_no, up, sig_name)
 
 % Identify peak detection threshold
 if strcmp(up.paramSet.ref_method, 'imp')

@@ -68,7 +68,7 @@ up_path = [fileparts(mfilename('fullpath')), up.paths.slash_direction, up_folder
 % remade if any settings have changed)
 redo_up = true;
 % Don't remake the universal_params file unless needed:
-if exist([up_filename, '.mat'], 'file') & ~redo_up
+if exist([up_filename, '.mat'], 'file') && ~redo_up
     fprintf('\n--- Loading Universal Parameters ');
     load(up_filename);
     return
@@ -203,7 +203,7 @@ else
     warning('Note there was no raw data for this period...')
     path00 = [up.paths.root_folder, 'VORTAL_rest', up.paths.slash_direction];
     path0 = [path00, 'Analysis_files', up.paths.slash_direction, 'Data_for_Analysis', up.paths.slash_direction];
-    eval(['path2 = ''VORTAL_rest_data'';']);
+    path2 = 'VORTAL_rest_data';
     load([path0, path2]);
     up.analysis.run_analysis = false;
     up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
@@ -288,7 +288,7 @@ elseif sum(strcmp(ref_fields, 'resp_sig')) && sum(strcmp(fieldnames(data(1).ref.
     up.paramSet.ref_method = 'imp';
 elseif sum(strcmp(ref_fields, 'breaths'))
     up.paramSet.ref_method = 'breaths';
-elseif sum(strcmp(ref_fields, 'params')) && sum(strcmp(fieldnames(data(1).ref.params, 'rr')))
+elseif sum(strcmp(ref_fields, 'params')) && sum(strcmp(fieldnames(data(1).ref.params), 'rr'))
     up.paramSet.ref_method = 'rrs';
 end
 

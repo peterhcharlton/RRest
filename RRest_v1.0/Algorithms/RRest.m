@@ -37,7 +37,7 @@ function RRest(period)
 %           http://peterhcharlton.github.io/RRest/waveform_analysis.html
 %       In addition, further information on RRest, including future
 %       versions, can be obtained at:
-%           http://peterhcharlton.github.io/RRest/index.html
+%           http://peterhcharlton.github.io/RRest
 %
 %   Comments, Questions, Criticisms, Feedback, Contributions:
 %       See: http://peterhcharlton.github.io/RRest/contributions.html
