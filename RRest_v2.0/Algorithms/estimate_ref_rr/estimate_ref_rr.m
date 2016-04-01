@@ -40,7 +40,7 @@ for subj = up.paramSet.subj_list
     
     %% Find ref RRs from breath timings
     if strcmp(up.paramSet.ref_method, 'breaths')
-        rr_ref.timings = find_rr_ref_from_ref_breaths(wins, data, subj, up);
+        rr_ref = find_rr_ref_from_ref_breaths(wins, data, subj, up);
         save_or_append_data
         continue
     end
@@ -241,7 +241,7 @@ end
 end
 
 function rr_ref = find_rr_ref_from_ref_breaths(wins, data, subj, up)
-rel_breath_timings = data(subj).reference.breaths.t;
+rel_breath_timings = data(subj).ref.breaths.t;
 
 rr_ref.t = mean([wins.t_start(:)' ; wins.t_end(:)']); rr_ref.t = rr_ref.t(:);
 rr_ref.v = nan(length(wins.t_start),1);

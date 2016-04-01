@@ -6,7 +6,7 @@ function up = setup_universal_params(period_orig)
 %
 %	Inputs:
 %		period_orig - the period of Vortal recording on which to do the
-%		analysis, e.g. 'mimic'
+%		analysis, e.g. 'vortal_rest'
 %
 %	Outputs:
 %       up      - a struct of universal parameters
@@ -16,10 +16,11 @@ function up = setup_universal_params(period_orig)
 %   Further Information:
 %       This version is specifically designed to facilitate reproduction of
 %       the analysis performed in:
-%           Charlton P.H. et al., "Waveform Analysis to Estimate
-%           Respiratory Rate" [In Press]
+%           Charlton P.H. and Bonnici T.B. et al. An assessment of algorithms
+%           to estimate respiratory rate from the electrocardiogram and
+%           photoplethysmogram, Physiological Measurement, 37(4), 2016.
 %       Further information on this study can be obtained at:
-%           http://peterhcharlton.github.io/RRest/waveform_analysis.html
+%           http://peterhcharlton.github.io/RRest/yhvs_assessment.html
 %       In addition, further information on RRest, including future
 %       versions, can be obtained at:
 %           http://peterhcharlton.github.io/RRest/index.html
@@ -28,7 +29,7 @@ function up = setup_universal_params(period_orig)
 %       See: http://peterhcharlton.github.io/RRest/contributions.html
 %
 %   Version:
-%       v.1 - published on 23rd Feb 2016 by Peter Charlton
+%       v.2 - published on 1st April 2016 by Peter Charlton
 %
 %   Licence:
 %       please see the accompanying file named "LICENSE"
@@ -46,7 +47,7 @@ up.paths.slash_direction = '\';     % usually a backslash for Windows, forward s
 % Specify path of data root folder. For instance, if you specify
 % "up.paths.root_folder = 'C:\Documents\Data\';", then data will be saved
 % in the directory located at 'C:\Documents\Data\DATASETNAME\', where
-% "DATASETNAME" is the name of the dataset being analysed, e.g. "MIMICII".
+% "DATASETNAME" is the name of the dataset being analysed, e.g. "vortal_rest".
 up.paths.root_folder = 'C:\Documents\Data\';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,24 +85,24 @@ fprintf('\n--- Creating Universal Parameters ');
 % Specify the stages of the algorithms (best left alone):
 up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};      %   % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
 % Specify methods for extraction of respiratory signals (feature / filter, ecg / ppg):
-up.al.options.extract_resp_sig = {'ppg_feat', 'ekg_feat'};
+up.al.options.extract_resp_sig = {'ppg_filt', 'ekg_filt', 'ppg_feat', 'ekg_feat'};  % Possible methods: 'ppg_feat', 'ekg_feat', 'ppg_filt', 'ekg_filt'
 % Specify the components for feature-based extraction of respiratory signals:
 up.al.sub_components.ppg_feat = {'EHF', 'PDt', 'FPt', 'FMe', 'RS', 'ELF'};  % Should read: {'EHF', 'PDt', 'FPt', 'FMe', 'RS', 'ELF'}
 up.al.sub_components.ekg_feat = {'EHF', 'RDt', 'FPt', 'FMe', 'RS', 'ELF'};  % Should read: {'EHF', 'RDt', 'FPt', 'FMe', 'RS', 'ELF'}
 % Specify the interchangeable technique(s) to be used for each component of feature-based extraction of respiratory signals:
 up.al.options.PDt = {'IMS'};                                                % Possible methods: 'DCl', 'COr', 'IMS'
 up.al.options.RDt = {'GC'};                                                 % Possible methods: 'GC', 'ME'
-up.al.options.FMe = {'am', 'fm', 'bw'};                                     % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'
+up.al.options.FMe = {'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'};           % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca'
 up.al.options.RS = {'linB'};                                                % Possible methods: 'cub', 'cubB', 'brg', 'lin', 'brgB', 'linB'
 % Specify the interchangeable technique(s) to be used for filter-based respiratory signal extraction:
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 % Specify the interchangeable technique(s) for RR Estimation
-up.al.options.estimate_rr = {'FTS', 'CtO', 'GCE'};
+up.al.options.estimate_rr = {'FTS', 'ARS', 'ARM', 'ARP', 'ARPz', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'};                                 % Possible methods: 'FTS', 'ARS', 'ARM', 'ARP', 'ARPz', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'
 % Different methods for fusion of RR estimates:
-up.al.options.fuse_rr = {'fus_mod'};                                        % Possible methods: 'fus_mod', 'fus_temp'
+up.al.options.fuse_rr = {'fus_mod', 'fus_temp'};                                        % Possible methods: 'fus_mod', 'fus_temp'
 % Components for each method of extraction of RR fusion:
-up.al.sub_components.fus_mod = {'SFu'};                                     % Possible methods: 'SFu', 'PMC', 'PRC', 'SPA'
+up.al.sub_components.fus_mod = {'SFu', 'SPA', 'PMC', 'PRC'};                                     % Possible methods: 'SFu', 'PMC', 'PRC', 'SPA'
 up.al.sub_components.fus_temp = {'TFu'};                                    % Possible methods: 'TFu'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -201,14 +202,14 @@ if exist(data_path, 'file')
     load(data_path);
 else
     warning('Note there was no raw data for this period...')
-    path00 = [up.paths.root_folder, 'VORTAL_rest', up.paths.slash_direction];
+    path00 = [up.paths.root_folder, 'vortal_rest', up.paths.slash_direction];
     path0 = [path00, 'Analysis_files', up.paths.slash_direction, 'Data_for_Analysis', up.paths.slash_direction];
-    path2 = 'VORTAL_rest_data';
+    path2 = 'vortal_rest_data';
     load([path0, path2]);
     up.analysis.run_analysis = false;
     up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
 end
-up.paramSet.subj_list = 1:length(data);
+up.paramSet.subj_list = 1:2; %length(data);
 up.paramSet.groups = extractfield(data, 'group');
 
 % window parameters
@@ -326,6 +327,7 @@ up.paramSet.imp_rr_method = 'num';   % num or thresh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save(up_path, 'up');
+
 end
 
 function provide_licence_details
