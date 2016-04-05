@@ -388,6 +388,7 @@ if ~exist(filepath, 'file')
     % unzip zip file
     unzip(downloadedfilename, curr_dir)
 end
+addpath(genpath(curr_dir))
 
 %% Step 1: Input Matrix
 % determine no of samples within either (i) 60 ms of QRS spike, or (ii) 300

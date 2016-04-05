@@ -209,7 +209,7 @@ else
     up.analysis.run_analysis = false;
     up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
 end
-up.paramSet.subj_list = 1:2; %length(data);
+up.paramSet.subj_list = 1:length(data);
 up.paramSet.groups = extractfield(data, 'group');
 
 % window parameters
@@ -332,7 +332,7 @@ end
 
 function provide_licence_details
 
-licence_details = ['\n\n RRest  Copyright (C) 2016  Peter H. Charlton', ...
+licence_details = ['\n\n RRest  Copyright (C) 2016  King''s College London',...
     '\n This program comes with ABSOLUTELY NO WARRANTY', ... 
     '\n and is available under the GNU public license.', ...
     '\n For details see the accompanying LICENSE.txt file.\n\n'];

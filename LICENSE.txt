@@ -2,7 +2,7 @@ RRest is a collection of physiological signal processing algorithms for use
 with Matlab mostly by Peter Charlton and available under the GNU
 public license.  
 
-Copyright (C) 2016  Peter H. Charlton
+Copyright (C) 2016  King's College London
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
