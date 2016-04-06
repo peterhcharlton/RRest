@@ -1299,6 +1299,12 @@ if strfind(up.paths.data_save_folder, '_TEMP')
     
 else
     
+    % add in an "elderly_log" for rec data:
+    params = fieldnames(rec.data.win_data);
+    if ~sum(strcmp(params, 'elderly_log'))
+        rec.data.win_data.elderly_log = false(size(rec.data.win_data.young_log));
+    end
+    
     %% Combine into one win_data file
     params = fieldnames(rest.data.win_data);
     for param = params(:)'
@@ -1448,6 +1454,12 @@ if strfind(up.paths.data_save_folder, '_TEMP')
     save(savepath, save_name)
     
 else
+    
+    % add in an "elderly_log" for rec data:
+    params = fieldnames(rec.data.win_data);
+    if ~sum(strcmp(params, 'elderly_log'))
+        rec.data.win_data.elderly_log = false(size(rec.data.win_data.young_log));
+    end
     
     %% Combine into one win_data file
     params = fieldnames(rest.data.win_data);

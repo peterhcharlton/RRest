@@ -129,14 +129,6 @@ function pk_inds = GC(s, fs, subj, up)
 % The author would appreciate correspondence regarding
 % corrections, modifications, improvements etc.
 
-% download the script if it isn't in the search path
-curr_dir = mfilename('fullpath'); curr_dir = curr_dir(1:end-3);
-filepath = [curr_dir, 'rpeakdetect.m'];
-if ~exist(filepath, 'file')
-    url = 'http://www.mit.edu/~gari/CODE/ECGtools/ecgBag/rpeakdetect.m';
-    downloadedfilename = websave(filepath,url);
-end
-
 [~, ~, ~, pk_inds, ~, ~]  = rpeakdetect(s.v(:),fs);
 
 end
