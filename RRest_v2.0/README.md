@@ -18,12 +18,12 @@ Both the dataset and code used to evaluate the techniques are publicly available
 Much of the work presented in this case study can be replicated as follows:
 
 *   Download data from the [Vortal dataset](http://peterhcharlton.github.io/RRest/vortal_dataset.html). You will need to download the data from young subjects both at rest and recovering from intense exercise (two data files).
-*   Use Version 2 of the toolbox of algorithms. Perform the analysis on the data at rest, and whilst recovering from exercise, by calling the main script using the following Matlab commands: (i) *RRest('vortal_rest')* , and (ii) *RRest('vortal_rec')*
-*   Combine the results of these two analyses by using the following Matlab command: *RRest('vortal_rest_and_rec')*
+*   Use Version 2 of the toolbox of algorithms. Perform the analysis on the data at rest, and whilst recovering from exercise, by calling the main script using the following commands: (i) *RRest('vortal_rest')* , and (ii) *RRest('vortal_rec')*
+*   Combine the results of these two analyses by using the following command: *RRest('vortal_rest_and_rec')*
 
 In addition, verification of algorithm implementations can be replicated as follows:
 *   Download the data from the [Synthetic dataset](http://peterhcharlton.github.io/RRest/synthetic_dataset.html).
-*   Use Version 2 of the toolbox of algorithms. Call the main script using the following Matlab command: *RRest('rrsynth')*
+*   Use Version 2 of the toolbox of algorithms. Call the main script using the following command: *RRest('rrsynth')*
 
 ## Further Resources
 
