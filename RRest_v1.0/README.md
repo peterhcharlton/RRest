@@ -6,11 +6,18 @@ Charlton P.H. *et al.* [**Waveform analysis to estimate respiratory rate**](http
 
 The work presented in this publication can be replicated exactly by following the instructions [here](http://peterhcharlton.github.io/RRest/waveform_analysis.html).
 
-## Summary
+## Summary of Publication
 
 Several techniques have been developed for estimation of respiratory rate (RR) from physiological waveforms.
 This case study presents a comparison of exemplary techniques for estimation of RR from the electrocardiogram (ECG) and photoplethysmogram (PPG) waveforms.
 Both the database and code used to evaluate the techniques are publicly available, equipping the reader with tools to develop and test their own RR algorithms for estimation of RR from physiological waveforms.
+
+## Replicating this Publication
+
+The work presented in this case study can be replicated as follows:
+
+*   Download data from the <a href="http://peterhcharlton.github.io/RRest/mimicii_dataset.html">MIMIC II dataset</a>.
+*   Use Version 1 of the toolbox of algorithms. To perform the analysis call the main script using the following Matlab command: *RRest('mimicii')*
 
 ## Further Resources
 
