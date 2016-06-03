@@ -17,7 +17,7 @@ Both the database and code used to evaluate the techniques are publicly availabl
 The work presented in this case study can be replicated as follows:
 
 *   Download data from the MIMIC II dataset using the script provided <a href="http://peterhcharlton.github.io/RRest/mimicii_dataset.html">here</a>.
-*   Use Version 1 of the toolbox of algorithms. To perform the analysis call the main script using the following Matlab command: *RRest('mimicii')*
+*   Use Version 1 of the toolbox of algorithms. To perform the analysis call the main script using the following command: *RRest('mimicii')*
 
 ## Further Resources
 
