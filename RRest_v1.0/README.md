@@ -24,3 +24,7 @@ The work presented in this case study can be replicated as follows:
 The accompanying [Wiki](https://github.com/peterhcharlton/RRest/wiki) acts as a user manual for the algorithms presented in this repository.
 
 For those interested in estimating respiratory rate from physiological signals, the wider [Respiratory Rate Estimation project](http://peterhcharlton.github.io/RRest/), of which this is a part, will be of interest. It also contains additional material such as data to use with the algorithms, publications arising from the project, and details of how to contribute.
+
+***
+Part of the wider **[Secondary Analysis of Electronic Health Records book](https://github.com/MIT-LCP/critical-data-book)**
+***
