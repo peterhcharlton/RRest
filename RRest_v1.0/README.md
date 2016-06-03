@@ -4,7 +4,7 @@ This version of the toolbox contains the algorithms used in the following public
 
 Charlton P.H. *et al.* [**Waveform analysis to estimate respiratory rate**](http://peterhcharlton.github.io/RRest/waveform_analysis.html), in *Secondary analysis of Electronic Health Record Data*, Springer, [Under Review]
 
-The work presented in this publication can be replicated exactly by following the instructions [here](http://peterhcharlton.github.io/RRest/waveform_analysis.html).
+The algorithms are provided in Matlab &reg; format.
 
 ## Summary of Publication
 
@@ -16,7 +16,7 @@ Both the database and code used to evaluate the techniques are publicly availabl
 
 The work presented in this case study can be replicated as follows:
 
-*   Download data from the <a href="http://peterhcharlton.github.io/RRest/mimicii_dataset.html">MIMIC II dataset</a>.
+*   Download data from the MIMIC II dataset using the script provided <a href="http://peterhcharlton.github.io/RRest/mimicii_dataset.html">here</a>.
 *   Use Version 1 of the toolbox of algorithms. To perform the analysis call the main script using the following Matlab command: *RRest('mimicii')*
 
 ## Further Resources
