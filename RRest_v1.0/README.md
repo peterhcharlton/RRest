@@ -26,5 +26,5 @@ The accompanying [Wiki](https://github.com/peterhcharlton/RRest/wiki) acts as a 
 For those interested in estimating respiratory rate from physiological signals, the wider [Respiratory Rate Estimation project](http://peterhcharlton.github.io/RRest/), of which this is a part, will be of interest. It also contains additional material such as data to use with the algorithms, publications arising from the project, and details of how to contribute.
 
 ***
-Part of the wider **[Secondary Analysis of Electronic Health Records book](https://github.com/MIT-LCP/critical-data-book)**
+Part of the wider **[Secondary Analysis of Electronic Health Records](https://github.com/MIT-LCP/critical-data-book)** book
 ***
