@@ -68,19 +68,19 @@ fprintf('\n -- Setting up Universal Parameters')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Specify the root data directory (where the data will be stored)
-up.paths.data_root = 'C:\Documents\Data\mimicii\';
-up.paths.data_save_folder = 'C:\Documents\Data\';
-
-% Specify the web address of the data to be downloaded
-rel_database = 'mimic2wdb';
-up.paths.database_dir = ['http://physionet.org/physiobank/database/', rel_database];
-
+ 
 % Please note that your system may require the slashes in file paths to be
 % of the opposite direction. In which case, change the following:
 slash = '\';
-
+ 
+% Specify the root data directory (where the data will be stored)
+up.paths.data_save_folder = 'C:\Documents\Data\';
+up.paths.data_root = [up.paths.data_save_folder, 'mimicii', slash];
+ 
+% Specify the web address of the data to be downloaded
+rel_database = 'mimic2wdb';
+up.paths.database_dir = ['http://physionet.org/physiobank/database/', rel_database];
+ 
 % if you want .eps illustrations, then do as follows:
 up.eps_figs = 0;  % set this to 1
 if up.eps_figs
