@@ -264,7 +264,7 @@ for subj_el = 1:length(ecg_data.mod.v)
     data(1,struct_el).ref.params.hr.units = 'beats/min';
     data(1,struct_el).ref.params.hr.method = 'simulated constant HR throughout recording';
     data(1,struct_el).ref.params.rr.v = 60*ppg_data.mod.f_r(subj_el);
-    data(1,struct_el).ref.params.hr.units = 'breaths/min';
+    data(1,struct_el).ref.params.rr.units = 'breaths/min';
     data(1,struct_el).ref.params.rr.method = 'simulated constant RR throughout recording';
     
     % insert PPG signal
