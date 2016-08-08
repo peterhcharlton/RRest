@@ -1,9 +1,12 @@
-The _RRest_ Synthetic Dataset
+The _RRest-sim_ Dataset
 =============================
+
+Simulated electrocardiogram and photoplethysmogram signals modulated by respiration
+-----------------------------------------------------------------------------------
 
 ### Overview
 
-The _RRest_ Synthetic Dataset consists of simulated ECG and PPG signals which have been modulated by one of the three respiratory modulations:
+The _RRest_ Synthetic Dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
 
 * Baseline Wander (BW),
 * Amplitude Modulation (AM), or
