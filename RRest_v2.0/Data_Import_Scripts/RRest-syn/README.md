@@ -9,7 +9,7 @@ The _RRest_ Synthetic Dataset consists of simulated ECG and PPG signals which ha
 * Amplitude Modulation (AM), or
 * Frequency Modulation (FM)
 
-It is designed for assessment of respiratory rate (RR) algorithms under ideal conditions.
+It is designed for assessment of respiratory rate (RR) algorithms under ideal conditions, as first described in the article cited below.
 
 ### Example
 
