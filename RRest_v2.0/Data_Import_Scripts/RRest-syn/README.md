@@ -6,7 +6,7 @@ Simulated electrocardiogram and photoplethysmogram signals modulated by respirat
 
 ### Overview
 
-The _RRest_ Synthetic Dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
+The _RRest-sim_ dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
 
 * Baseline Wander (BW),
 * Amplitude Modulation (AM), or
@@ -40,7 +40,7 @@ In addition, the script used to generate the data, _RRest-syn_generator_, is pro
 
 ### Files
 
-The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-syn###_, where ### varies from 1-192.
+The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-sim###_, where ### varies from 1-192.
 
 ### Citation
 
