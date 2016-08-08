@@ -44,3 +44,11 @@ Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watki
 ### Licence
 
 This dataset is distributed under the CC BY Licence (CC BY 3.0), which is available [here](https://creativecommons.org/licenses/by/3.0/).
+
+### Additional References
+
+The figure shown in this file is adapted from:
+
+1. Addison, P.S. et al.: Developing an algorithm for pulse oximetry derived respiratory rate (RR(oxi)): a healthy volunteer study. Journal of Clinical Monitoring and Computing, 26(1), 45-51 (2012), DOI: 10.1007/s10877-011-9332-y
+
+2. Pimentel, M.A. et al.: Probabilistic estimation of respiratory rate from wearable sensors. in Wearable Electronics Sensors, Springer International Publishing, 15, 241-262 (2015), DOI: 10.1007/978-3-319-18191-2_10
