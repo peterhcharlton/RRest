@@ -29,8 +29,8 @@ For further details of the methodology please see the article cited below.
 
 The dataset is provided in three formats:
 
-* Comma-separated value format,
-* Matlab &reg; data format, and
+* Comma-separated value (.csv) format,
+* Matlab &reg; data format (.mat), and
 * WaveForm DataBase (WFDB) format.
 
 In addition, the script used to generate the data, _RRest-syn_generator_, is provided in Matlab &reg; format (although this can be read as a text file).
