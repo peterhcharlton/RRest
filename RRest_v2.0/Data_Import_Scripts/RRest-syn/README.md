@@ -18,7 +18,7 @@ It is designed for assessment of respiratory rate (RR) algorithms as first descr
 
 The following figure shows exemplary Synthetic Signals. Idealised PPG and ECG signals are shown on the top row. On the three subsequent rows are idealised signals modulated with BW, AM and FM.
 
-![](http://haemod.uk/images/research/pete/resp_mods.png)
+![](https://cloud.githubusercontent.com/assets/9865941/17485697/4e39b128-5d86-11e6-86d0-211ac81b0965.png)
 
 The figure is adapted from refs 1 and 2.
 
