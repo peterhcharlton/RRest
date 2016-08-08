@@ -12,7 +12,7 @@ The _RRest_ Synthetic Dataset consists of simulated electrocardiogram (ECG) and 
 * Amplitude Modulation (AM), or
 * Frequency Modulation (FM)
 
-It is designed for assessment of respiratory rate (RR) algorithms under ideal conditions, as first described in the article cited below.
+It is designed for assessment of respiratory rate (RR) algorithms as first described in the article cited below. It allows one to firstly test whether an RR algorithm has been implemented _reasonably_ (_i.e._ whether it estimates RR accurately in ideal conditions). Secondly, one can identify the limitations of RR algorithms, such as whether they perform accurately in the presence of one particular modulation, and whether their performance is linked to the underlying heart rate (HR) or respiratory rate (RR).
 
 ### Example
 
@@ -24,7 +24,7 @@ The figure is adapted from refs 1 and 2.
 
 ### Methods
 
-The dataset was generated using the Matlab &reg; script called _RRest-syn_generator_. Exemplary ECG and PPG beats lasting one second were repeated 210 times, giving a simulated signal lasting 210 s. This signal was then modulated by each of the three respiratory modulations in turn (BW, AM and FM), producing three separate signals. This process was repeated for a range of heart rates (HRs, 30 - 200 beats per minute) and respiratory rates (RRs, 4 - 60 breaths per minute). When the HR was varied, the RR was fixed at 20 bpm. When the RR was varied, the HR was fixed at 80 bpm.
+The dataset was generated using the Matlab &reg; script called _RRest-syn_generator_. Exemplary ECG and PPG beats lasting one second were repeated 210 times, giving a simulated signal lasting 210 s. This signal was then modulated by each of the three respiratory modulations in turn (BW, AM and FM), producing three separate signals. This process was repeated for a range of HRs (30 - 200 beats per minute) and RRs (4 - 60 breaths per minute). When the HR was varied, the RR was fixed at 20 bpm. When the RR was varied, the HR was fixed at 80 bpm.
 
 For further details of the methodology please see the article cited below.
 
