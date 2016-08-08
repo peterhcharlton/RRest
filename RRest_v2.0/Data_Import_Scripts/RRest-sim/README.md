@@ -50,6 +50,10 @@ The following Matlab &reg; scripts are provided, allowing the dataset to be repr
 
 * **_RRest-sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
 * **_RRest_dataset_converter_** : This script is used to convert the dataset from Matlab &reg; format to .csv and WFDB format.
+* 
+### Pre-requisites
+
+The only additional requirements arise if you wish to convert a dataset to WFDB format (this is optional). If you do, then you will need to install the [WFDB Toolbox for Matlab](https://physionet.org/physiotools/matlab/wfdb-app-matlab/).
 
 ### Citation
 
