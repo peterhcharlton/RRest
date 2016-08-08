@@ -50,7 +50,7 @@ The following Matlab &reg; scripts are provided, allowing the dataset to be repr
 
 * **_RRest_sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
 * **_RRest_dataset_converter_** : This script is used to convert the dataset from Matlab &reg; format to .csv and WFDB format.
-* 
+
 ### Pre-requisites
 
 The only additional requirements arise if you wish to convert a dataset to WFDB format (this is optional). If you do, then you will need to install the [WFDB Toolbox for Matlab](https://physionet.org/physiotools/matlab/wfdb-app-matlab/).
@@ -59,7 +59,7 @@ The only additional requirements arise if you wish to convert a dataset to WFDB 
 
 Please cite the following article when using the dataset:
 
-Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watkinson, P. J. (2016). An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram. Physiological Measurement, 37(4), 610–626. [DOI: 10.1088/0967-3334/37/4/610](http://doi.org/10.1088/0967-3334/37/4/610)
+Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watkinson, P. J. (2016). An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram. Physiological Measurement, 37(4), 610â€“626. [DOI: 10.1088/0967-3334/37/4/610](http://doi.org/10.1088/0967-3334/37/4/610)
 
 ### Licence
 
