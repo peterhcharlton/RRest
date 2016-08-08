@@ -1,4 +1,4 @@
-The _RRest-sim_ Dataset
+The _RRest-syn_ Dataset
 =============================
 
 Simulated electrocardiogram and photoplethysmogram signals modulated by respiration
@@ -6,7 +6,7 @@ Simulated electrocardiogram and photoplethysmogram signals modulated by respirat
 
 ### Overview
 
-The _RRest-sim_ dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
+The _RRest-syn_ dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
 
 * Baseline Wander (BW),
 * Amplitude Modulation (AM), or
@@ -42,13 +42,13 @@ Further details of the WFDB format are available [here](https://physionet.org/tu
 
 ### Files
 
-The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-sim###_, where ### varies from 1-192.
+The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-syn###_, where ### varies from 1-192.
 
 ### Accompanying Scripts
 
 The following Matlab &reg; scripts are provided, allowing the dataset to be reproduced (note that these can be read as text files):
 
-* **_RRest_sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
+* **_RRest_synth_generator_** : This script is used to generate _RRest-syn_ in Matlab &reg; format.
 * **_RRest_dataset_converter_** : This script is used to convert the dataset from Matlab &reg; format to .csv and WFDB format.
 
 ### Pre-requisites
