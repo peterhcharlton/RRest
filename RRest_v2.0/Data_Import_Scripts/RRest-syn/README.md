@@ -24,11 +24,11 @@ The figure is adapted from refs 1 and 2.
 
 ### Methods
 
-The dataset was generated using the Matlab &reg; script called _RRest-syn_generator_. Exemplary ECG and PPG beats lasting one second were repeated 210 times, giving a simulated signal lasting 210 s. This signal was then modulated by each of the three respiratory modulations in turn (BW, AM and FM), producing three separate signals. This process was repeated for a range of HRs (30 - 200 beats per minute) and RRs (4 - 60 breaths per minute). When the HR was varied, the RR was fixed at 20 bpm. When the RR was varied, the HR was fixed at 80 bpm.
+The dataset was generated using the Matlab &reg; script called _RRest-syn_generator_. Exemplary ECG and PPG beats lasting one second were repeated 210 times, giving a simulated signal lasting 210 s. This signal was then modulated by each of the three respiratory modulations in turn (BW, AM and FM), producing three separate signals. This process was repeated for a range of HRs (30 - 200 beats per minute) and RRs (4 - 60 breaths per minute). When the HR was varied, the RR was fixed at 20 bpm. When the RR was varied, the HR was fixed at 80 bpm. Signals are sampled at 100 Hz.
 
 For further details of the methodology please see the article cited below.
 
-### Format
+### Formats
 
 The dataset is provided in three formats:
 
@@ -36,11 +36,20 @@ The dataset is provided in three formats:
 * Matlab &reg; data format (.mat), and
 * WaveForm DataBase (WFDB) format.
 
-In addition, the script used to generate the data, _RRest-syn_generator_, is provided in Matlab &reg; format (although this can be read as a text file).
+The files in .csv format consist of two columns, one for each of PPG and ECG signals. They are accompanied by a file describing the fixed metadata for that set of signals (_e.g._ the HR, RR and type of modulation).
+
+Further details of the WFDB format are available [here](https://physionet.org/tutorials/creating-records.shtml).
 
 ### Files
 
 The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-sim###_, where ### varies from 1-192.
+
+### Accompanying Scripts
+
+The following Matlab &reg; scripts are provided, allowing the dataset to be reproduced (note that these can be read as text files):
+
+* **_RRest-sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
+* **_RRest_dataset_converter_** : This script is used to convert the dataset from Matlab &reg; format to .csv and WFDB format.
 
 ### Citation
 
