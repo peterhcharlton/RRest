@@ -13,7 +13,7 @@ It is designed for assessment of respiratory rate (RR) algorithms under ideal co
 
 ### Example
 
-![](http://iopscience.iop.org/0967-3334/37/4/610/downloadHRFigure/figure/pmeaaa1942f01.jpg)!
+![Exemplary Synthetic Signals: Idealised PPG and ECG signals are shown on the top row. On the three subsequent rows are idealised signals modulated with Baseline Wander (BW), Amplitude Modulation (AM) and Frequency Modulation (FM). Adapted from refs 1 and 2.](http://haemod.uk/images/research/pete/resp_mods.png)
 
 ### Methods
 
