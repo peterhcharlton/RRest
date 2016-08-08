@@ -48,7 +48,7 @@ The files are separated into three directories. The data is provided in three di
 
 The following Matlab &reg; scripts are provided, allowing the dataset to be reproduced (note that these can be read as text files):
 
-* **_RRest-sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
+* **_RRest_sim_generator_** : This script is used to generate _RRest-sim_ in Matlab &reg; format.
 * **_RRest_dataset_converter_** : This script is used to convert the dataset from Matlab &reg; format to .csv and WFDB format.
 * 
 ### Pre-requisites
