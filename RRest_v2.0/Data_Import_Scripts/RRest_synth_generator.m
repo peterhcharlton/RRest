@@ -1,9 +1,9 @@
-function RRSYNTH_data_generater
-% RRSYNTH_data_generater generates synthetic ECG and PPG data under the
+function RRest_synth_generator
+% RRest_synth_generator generates synthetic ECG and PPG data under the
 % influence of each of three respiratory modulations: baseline wander (BW),
 % amplitude modulation (AM), and frequency modulation (FM).
 %
-%               RRSYNTH_data_generater
+%               RRest_synth_generator
 %
 %	Inputs:
 %       none
@@ -15,7 +15,7 @@ function RRSYNTH_data_generater
 %       specified by "up.paths.analysis_path".
 %           
 %   Further Information:
-%       This version of RRSYNTH_data_generater is provided to facilitate
+%       This version of RRest_synth_generator is provided to facilitate
 %       reproduction of the analysis performed in:
 %           Charlton P.H. and Bonnici T.B. et al. An assessment of algorithms
 %           to estimate respiratory rate from the electrocardiogram and
@@ -66,7 +66,7 @@ fprintf('\n - Setting up Universal Parameters');
 %%%%%%%%%%%%% PARAMETERS TO BE SPECIFIED %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Directory in which to save the simulated dataset:
+% Directory in which to save the synthetic dataset:
 up.analysispath = 'C:\Documents\Data\';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
