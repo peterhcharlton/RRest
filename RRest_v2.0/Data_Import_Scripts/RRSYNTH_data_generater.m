@@ -33,6 +33,11 @@ function RRSYNTH_data_generater
 %       v.2 - published on 1st April 2016 by Peter Charlton
 %               (note that this file was first uploaded on 30th June 2016)
 %
+%   Updates:
+%       8th Aug 2016 - updated by Peter Charlton to allow the user to
+%       specify the signals (ECG, PPG, or both) and modulations (BW, AM and
+%       FM) to be simulated.
+%
 %   Licence:
 %       please see the accompanying file named "LICENSE"
 %
@@ -68,6 +73,12 @@ up.analysispath = 'C:\Documents\Data\';
 %%%%%%%%%%%%%%%   OTHER PARAMETERS   %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%   (don't need editing)   %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Signals to be simulated:
+up.sigs = {'ecg', 'ppg'};
+
+% Modulations to be simulated:
+up.mods = {'bw', 'am', 'fm'};
 
 % Duration of simulated data:
 up.no_secs = 210;
@@ -117,12 +128,8 @@ fprintf('\n - Generating synthetic data');
 % - constant RR = 20, with HR varying from 30 to 200 at 5 bpm intervals;
 % - each modulation on its own (BW, AM and FM)
 
-% Setup
-mods = {'bw', 'am', 'fm'};
-sigs = {'ppg_data', 'ecg_data'};
-
 % Cycle through each signal
-for sig_no = 1 : length(sigs)
+for sig_no = 1 : length(up.sigs)
     seg_counter = 0;
         
     % Holding each of HR and RR constant in turn
@@ -143,7 +150,7 @@ for sig_no = 1 : length(sigs)
         settings.hr.w = 2*pi*settings.hr.f_hz;
         
         % cycle through mods
-        for mod_no = 1 : length(mods)
+        for mod_no = 1 : length(up.mods)
             
             % cycle through HRs
             for hr_no = 1 : length(settings.hr.w)
@@ -157,30 +164,30 @@ for sig_no = 1 : length(sigs)
                     
                     %% Find modulated data for this combination of settings
                     % Find out what the combination of settings is:
-                    temp.sig = sigs{sig_no};
-                    temp.mod = mods{mod_no};
+                    temp.sig = up.sigs{sig_no};
+                    temp.mod = up.mods{mod_no};
                     temp.rr = settings.rr.w(rr_no);
                     seg_counter = seg_counter+1;
                     
-                    eval(['unmod_data = ' temp.sig '.unmod;']);
+                    eval(['unmod_data = ' temp.sig '_data.unmod;']);
                     mod_data = generate_modulated_data(unmod_data, temp, up);
                     
                     sig_data{seg_counter,1} = mod_data.v;
                     sig_time{seg_counter,1} = mod_data.t;
                     sig_f_r(seg_counter,1) = settings.rr.f_hz(rr_no);
                     sig_f_c(seg_counter,1) = settings.hr.f_hz(hr_no);
-                    sig_mod{seg_counter,1} = mods{mod_no};
+                    sig_mod{seg_counter,1} = up.mods{mod_no};
                     
                 end
             end
         end
         
         % Store the simulated signals
-        eval([temp.sig, '.mod.v = sig_data;']);
-        eval([temp.sig, '.mod.t = sig_time;']);
-        eval([temp.sig, '.mod.f_r = sig_f_r;']);
-        eval([temp.sig, '.mod.f_c = sig_f_c;']);
-        eval([temp.sig, '.mod.type = sig_mod;']);
+        eval([temp.sig, '_data.mod.v = sig_data;']);
+        eval([temp.sig, '_data.mod.t = sig_time;']);
+        eval([temp.sig, '_data.mod.f_r = sig_f_r;']);
+        eval([temp.sig, '_data.mod.f_c = sig_f_c;']);
+        eval([temp.sig, '_data.mod.type = sig_mod;']);
     end
 end
 end
@@ -188,11 +195,12 @@ end
 function [ppg_data, ecg_data] = find_unmod_data(ppg_data, ecg_data, hr, up)
 
 %% Find un-modulated data for this HR
-for sig = {'ppg_data', 'ecg_data'}
+for sig = up.sigs
     % Extract data
-    eval(['beat_data = ' sig{1,1} '.beat;']);
+    eval(['beat_data = ' sig{1,1} '_data.beat;']);
     % Normalise data
-    beat_data.v = up.sig_range * (beat_data.v - min(beat_data.v))/(range(beat_data.v));
+    data_range = max(beat_data.v)-min(beat_data.v);
+    beat_data.v = up.sig_range * (beat_data.v - min(beat_data.v))/(data_range);
     % Find duration of a single beat
     beat_duration = 60/hr;
     beat_samples = beat_duration*up.fs;
@@ -210,7 +218,7 @@ for sig = {'ppg_data', 'ecg_data'}
     beat_samples = length(beat_data.t);    % incase the number of samples isn't a whole number
     beat_data.seg.t = [0:(tot_no_samples-1)]*(1/beat_samples)*(beat_samples/up.fs);
     % Re-insert data
-    eval([sig{1,1} '.unmod = beat_data.seg;']);
+    eval([sig{1,1} '_data.unmod = beat_data.seg;']);
 end
 
 end
@@ -258,28 +266,46 @@ for subj_el = 1:length(ecg_data.mod.v)
     end
     
     % Insert fixed params
-    data(1,struct_el).group = ppg_data.mod.type{subj_el};
+    if sum(strcmp(up.sigs, 'ppg'))
+        data(1,struct_el).group = ppg_data.mod.type{subj_el};
+    else
+        data(1,struct_el).group = ecg_data.mod.type{subj_el};
+    end
     data(1,struct_el).fix.ventilation = 'simulated';
-    data(1,struct_el).ref.params.hr.v = 60*ppg_data.mod.f_c(subj_el);
+    if sum(strcmp(up.sigs, 'ppg'))
+        data(1,struct_el).ref.params.hr.v = 60*ppg_data.mod.f_c(subj_el);
+        data(1,struct_el).ref.params.rr.v = 60*ppg_data.mod.f_r(subj_el);
+    else
+        data(1,struct_el).ref.params.hr.v = 60*ecg_data.mod.f_c(subj_el);
+        data(1,struct_el).ref.params.rr.v = 60*ecg_data.mod.f_r(subj_el);
+    end
     data(1,struct_el).ref.params.hr.units = 'beats/min';
     data(1,struct_el).ref.params.hr.method = 'simulated constant HR throughout recording';
-    data(1,struct_el).ref.params.rr.v = 60*ppg_data.mod.f_r(subj_el);
     data(1,struct_el).ref.params.rr.units = 'breaths/min';
     data(1,struct_el).ref.params.rr.method = 'simulated constant RR throughout recording';
     
     % insert PPG signal
-    data(1,struct_el).ppg.v = ppg_data.mod.v{subj_el};
-    data(1,struct_el).ppg.fs = up.fs;
-    data(1,struct_el).ppg.method = 'simulated finger PPG';
+    if sum(strcmp(up.sigs, 'ppg'))
+        data(1,struct_el).ppg.v = ppg_data.mod.v{subj_el};
+        data(1,struct_el).ppg.fs = up.fs;
+        data(1,struct_el).ppg.method = 'simulated finger PPG';
+    end
     
     % insert EKG signal
-    data(1,struct_el).ekg.v = ecg_data.mod.v{subj_el};
-    data(1,struct_el).ekg.fs = up.fs;
-    data(1,struct_el).ekg.method = 'simulated ECG';
+    if sum(strcmp(up.sigs, 'ecg'))
+        data(1,struct_el).ekg.v = ecg_data.mod.v{subj_el};
+        data(1,struct_el).ekg.fs = up.fs;
+        data(1,struct_el).ekg.method = 'simulated ECG';
+    end
     
     % Generate breath timings
-    mod_data_t = [0:(length(data(subj_el).ppg.v)-1)]*(1/(up.fs));
-    breaths.t = mod_data_t(1):(1/ppg_data.mod.f_r(subj_el)):mod_data_t(end);
+    if sum(strcmp(up.sigs, 'ppg'))
+        mod_data_t = [0:(length(data(subj_el).ppg.v)-1)]*(1/(up.fs));
+        breaths.t = mod_data_t(1):(1/ppg_data.mod.f_r(subj_el)):mod_data_t(end);
+    else
+        mod_data_t = [0:(length(data(subj_el).ekg.v)-1)]*(1/(up.fs));
+        breaths.t = mod_data_t(1):(1/ecg_data.mod.f_r(subj_el)):mod_data_t(end);
+    end
     
     % insert reference RRs
     data(1,struct_el).ref.breaths.t = breaths.t;
