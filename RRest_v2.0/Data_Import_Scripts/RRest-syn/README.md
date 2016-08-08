@@ -31,11 +31,15 @@ The dataset is provided in three formats:
 
 In addition, the script used to generate the data, _RRest-syn_generator_, is provided in Matlab &reg; format (although this can be read as a text file).
 
+### Files
+
+The files are separated into three directories. The data is provided in three directories, one for each format. Within each directory are the files corresponding to each of the 192 generated signals (consisting of 35 signals with the RR fixed at 20 bpm, and 29 signals with the HR fixed at 80 bpm, each repeated three times - once for each respiratory modulation). These files are named as _RRest-syn###_, where ### varies from 1-192.
+
 ### Citation
 
 Please cite the following article when using the dataset:
 
-Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watkinson, P. J. (2016). An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram. Physiological Measurement, 37(4), 610–626. [DOI:](http://doi.org/10.1088/0967-3334/37/4/610)
+Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watkinson, P. J. (2016). An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram. Physiological Measurement, 37(4), 610–626. [DOI: 10.1088/0967-3334/37/4/610](http://doi.org/10.1088/0967-3334/37/4/610)
 
 ### Licence
 
