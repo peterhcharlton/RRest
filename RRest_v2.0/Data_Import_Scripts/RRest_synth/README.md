@@ -6,13 +6,13 @@ Simulated electrocardiogram and photoplethysmogram signals modulated by respirat
 
 ### Overview
 
-The _RRest-syn_ dataset consists of simulated electrocardiogram (ECG) and photoplethysmogram (PPG) signals which have been modulated by one of the three respiratory modulations:
+The _RRest-syn_ dataset is a collection of simulated electrocardiogram (ECG) and pulse oximetry (photoplethysmogram, PPG) signals which have been modulated by one of the three respiratory modulations:
 
 * Baseline Wander (BW),
 * Amplitude Modulation (AM), or
 * Frequency Modulation (FM)
 
-It is designed for assessment of respiratory rate (RR) algorithms as first described in the article cited below. It allows one to firstly test whether an RR algorithm has been implemented _reasonably_ (_i.e._ whether it estimates RR accurately in ideal conditions). Secondly, one can identify the limitations of RR algorithms, such as whether they perform accurately in the presence of one particular modulation, and whether their performance is linked to the underlying heart rate (HR) or respiratory rate (RR).
+It was designed for assessment of algorithms for estimation of respiratory rate (RR) from the ECG and PPG. It serves two purposes. Firstly, it allows one to determine whether an RR algorithm has been implemented reasonably (i.e. whether it estimates RR accurately in ideal conditions). Secondly, it allows one to assess the limitations of RR algorithms, such as whether they perform accurately in the presence of different types of respiratory modulation, and whether their performance is dependent on the underlying heart rate (HR) or RR.
 
 ### Example
 
@@ -57,7 +57,7 @@ The only additional requirements arise if you wish to convert a dataset to WFDB 
 
 ### Citation
 
-Please cite the following article when using the dataset:
+Please cite the following associated publication when using the dataset:
 
 Charlton, P. H., Bonnici, T., Tarassenko, L., Clifton, D. A., Beale, R., & Watkinson, P. J. (2016). An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram. Physiological Measurement, 37(4), 610–626. [DOI: 10.1088/0967-3334/37/4/610](http://doi.org/10.1088/0967-3334/37/4/610)
 
