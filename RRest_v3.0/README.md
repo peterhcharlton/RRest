@@ -1,0 +1,26 @@
+# Respiratory Rate Estimation Algorithms: v.3
+
+This version of the toolbox contains the algorithms used in the following publication:
+
+Charlton P.H. *et al.* [**Extraction of Respiratory Signals from the Electrocardiogram and Photoplethysmogram: Technical and Physiological Determinants**](http://peterhcharlton.github.io/RRest/factors_assessment.html), *In Preparation*
+
+The algorithms are provided in Matlab &reg; format.
+
+## Summary of Publication
+
+In this article we assessed the influences of a range of technical and physiological factors on respiratory signals extracted from the ECG and PPG. Respiratory signals were extracted from the Vortal dataset (young and elderly subjects) using a wide range of techniques. The correlations of each extracted respiratory signal with a reference respiratory signal were calculated. This allowed us to investigate the effect of several technical factors (including site of PPG measurement, type of recording equipment, input signal (ECG or PPG) and sampling frequency), and physiological factors (including age, gender and respiratory rate) on the respiratory signals.
+Both the dataset and code used to perform this study are publicly available.
+
+## Replicating this Publication
+
+Much of the work presented in this case study can be replicated as follows:
+
+*   Download data from the [Vortal dataset](http://peterhcharlton.github.io/RRest/vortal_dataset.html). You will need to download the data from young and elderly subjects at rest.
+*   Use Version 3 of the toolbox of algorithms. Perform the analysis by calling the main script using the following command: *RRest('vortal_rest')*
+
+
+## Further Resources
+
+The accompanying [Wiki](https://github.com/peterhcharlton/RRest/wiki) acts as a user manual for the algorithms presented in this repository.
+
+For those interested in estimating respiratory rate from physiological signals, the wider [Respiratory Rate Estimation project](http://peterhcharlton.github.io/RRest/), of which this is a part, will be of interest. It also contains additional material such as data to use with the algorithms, publications arising from the project, and details of how to contribute.
