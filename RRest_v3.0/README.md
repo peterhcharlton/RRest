@@ -15,9 +15,11 @@ Both the dataset and code used to perform this study are publicly available.
 
 Much of the work presented in this case study can be replicated as follows:
 
-*   Download data from the [Vortal dataset](http://peterhcharlton.github.io/RRest/vortal_dataset.html). You will need to download the data from young and elderly subjects at rest.
-*   Use Version 3 of the toolbox of algorithms. Perform the analysis by calling the main script using the following command: *RRest('vortal_rest')*
-
+*   Download data from the [Vortal dataset](http://peterhcharlton.github.io/RRest/vortal_dataset.html). You will need to download the data from young and elderly subjects at rest (the *vortal_young_elderly* dataset).
+*   Use *run_vortal_downsampler.m* to downsample the ECG and PPG signals in the dataset. This will generate the *vortal_factors* dataset.
+*   Copy the *vortal_factors* dataset to the root data folder, which is the folder specified by *up.paths.root_folder
+* in *setup_universal_params.m*.
+*   Use Version 3 of the toolbox of algorithms. Extract respiratory signals and calculate their qualities by calling the main script using the following command: *RRest('vortal_factors')*
 
 ## Further Resources
 
