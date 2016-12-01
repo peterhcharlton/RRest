@@ -97,7 +97,7 @@ up.al.options.RS = {'linB'};                                                % Po
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'CCF', 'BFi'};                      % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 % Specify the interchangeable technique(s) for RR Estimation
-up.al.options.estimate_rr = {'FTS', 'CtO', 'GCE'};
+up.al.options.estimate_rr = {'FTS', 'CtO'};
 % Different methods for fusion of RR estimates:
 up.al.options.fuse_rr = {'fus_mod'};                                        % Possible methods: 'fus_mod', 'fus_temp'
 % Components for each method of extraction of RR fusion:
