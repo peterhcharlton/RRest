@@ -19,6 +19,7 @@ Much of the work presented in this case study can be replicated as follows:
 *   Use *run_vortal_downsampler.m* to downsample the ECG and PPG signals in the dataset. This will generate the *vortal_factors* dataset.
 *   Copy the *vortal_factors* dataset to the root data folder, which is the folder specified by *up.paths.root_folder* in *setup_universal_params.m*.
 *   Use Version 3 of the toolbox of algorithms. Extract respiratory signals and calculate their qualities by calling the main script using the following command: *RRest('vortal_factors')*
+*   Use *run_vortal_determinants_analysis.m* to perform the analyses reported in the publication. This creates the tables and plots shown in the publication.
 
 ## Further Resources
 
