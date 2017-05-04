@@ -2,7 +2,7 @@
 
 This version of the toolbox contains the algorithms used in the following publication:
 
-Charlton P.H. *et al.* [**Extraction of Respiratory Signals from the Electrocardiogram and Photoplethysmogram: Technical and Physiological Determinants**](http://peterhcharlton.github.io/RRest/factors_assessment.html), *In Preparation*
+Charlton P.H. *et al.* [**Extraction of Respiratory Signals from the Electrocardiogram and Photoplethysmogram: Technical and Physiological Determinants**](http://peterhcharlton.github.io/RRest/factors_assessment.html), Physiological Measurement, 38(5), pp. 669 - 690, 2017.
 
 The algorithms are provided in Matlab &reg; format.
 
