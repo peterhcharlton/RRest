@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="twitter:card" content="summary" />
+    <title>Respiratory Rate Estimation by peterhcharlton</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">STEM for Britain</h1>
+      <h2 class="project-tagline">Publication</h2>
+      <a href="publications.html" class="btn">Publications Homepage</a>
+    </section>
 
+    <section class="main-content">
+<h3> <a id="Summary" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h3>
+
+<p>In this article we introduced the toolbox (v.2) by assessing a wide range of existing RR algorithms.
+Algorithm implementations were verified using the <a href="synthetic_dataset.html">Synthetic dataset</a>.
+Following this algorithms were applied to both the ECG and the PPG on the <a href="vortal_dataset.html">Vortal dataset</a> (young subjects).
+</p>
+
+<h3> <a id="Full_text" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Link to full text</h3>
+
+<a href="http://iopscience.iop.org/article/10.1088/0967-3334/37/4/610">
+	Charlton P.H. and Bonnici T. <i>et al.</i> <b>An assessment of algorithms to estimate respiratory rate from the electrocardiogram and photoplethysmogram</b>, <i>Physiological Measurement</i>, 37(4), pp. 610-26, 2016</a>
+	    
+<h3> <a id="Presentation" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accompanying presentation</h3>
+
+<p><a href="https://zenodo.org/record/166525/files/An%20Assessment%20of%20algorithms.pdf"> This <b> presentation </b> </a> provides an overview of the article. It is designed for use in journal club settings, and was originally presented at the University of Oxford. DOI: <a href="http://doi.org/10.5281/zenodo.166525"> 10.5281/zenodo.166525 </a>
+	    
+<h3> <a id="Replicate" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Replicating this study</h3>
+
+Much of this study can be replicated by following the instructions <a href="https://github.com/peterhcharlton/RRest/tree/master/RRest_v2.0">here</a>.
+
+    </section>
+
+  
+  </body>
+</html>
