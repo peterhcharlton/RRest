@@ -338,7 +338,7 @@ if up.analysis.calc_synth_stats
 end
 
 %% Find specific stats for vortal paper;
-calc_vortal_stats = 1;
+calc_vortal_stats = 0;
 if calc_vortal_stats
     specific_vortal_stats(up);
     do_plots = 0;
