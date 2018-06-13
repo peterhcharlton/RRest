@@ -21,9 +21,9 @@
 <a id="Summary" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
 
 <p>The BIDMC dataset is a dataset of electrocardiogram (ECG), pulse oximetry (photoplethysmogram, PPG) and impedance pneumography respiratory signals acquired from intensive care patients.
-The dataset is intended to be used for evaluating the performance of algorithms in real-case operating conditions.
+The dataset is intended to be used for evaluating the performance of respiratory rate algorithms, reflecting their potential performance in a real-world critical care environment.
 This dataset is a very small subset of the Physionet’s MIMIC II Waveform Database Matched Subset, which contains all MIMIC II Waveform Database records that have been associated with the MIMIC II Clinical Database records.
-Read more about the overall dataset <a href="https://physionet.org/physiobank/database/mimic2wdb/matched/">here</a>.
+Read more about the MIMIC II Waveform Database <a href="https://physionet.org/physiobank/database/mimic2wdb/matched/">here</a>.
 
 </p>
 
@@ -31,26 +31,28 @@ Read more about the overall dataset <a href="https://physionet.org/physiobank/da
 
 <p>The dataset comprises 53 8-minute recordings of ECG, PPG, and impedance pneumography signals (sampling frequency, fs =  125 Hz) acquired from adult patients (aged 19-90+, 32 females).
 Those in the dataset were randomly selected from a larger cohort of patients who were admitted to medical and surgical intensive care units at the Beth Israel Deaconess Medical Center (BIDMC), Boston, USA. 
-Two sets of annotations (performed manually and independently by two research assistants) of individual breaths of the impedance pneumography signal can be used to derive reference respiratory rate values.
+Two sets of annotations (performed manually and independently by two researchers) of individual breaths in the impedance pneumography signal can be used to derive reference respiratory rate values.
 </p>
 
 <h3><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
+	
+This figure shows an example of the impedance pneumography, ECG and PPG signals contained in the dataset.
 <figure>
   <img src="https://cloud.githubusercontent.com/assets/9865941/13321748/ce4d0ce2-dbc8-11e5-91d0-c480bad98555.png" alt="MIMICII_Signals">
 	<figcaption> <center> <b>Exemplary BIDMC Signals:</b> The three types of relevant simultaneous signals contained within the BIDMC dataset are shown (from top): Impedance Pneumography (IP) signals; ECG signals; PPG signals.</center>
 </figure>
-
+	
 <h3><span aria-hidden="true" class="octicon octicon-link"></span></a>Publications</h3>
 
 <p>The dataset was used in <a href="http://link.springer.com/chapter/10.1007%2F978-3-319-18191-2_10">this publication</a> and the publication below for evaluating the performance of different respiratory rate estimation algorithms.
 </p>
 
 <a href="http://doi.org/10.1109/TBME.2016.2613124">
-	Pimentel, M.A.F. <i>et al.</i> <b>Towards a Robust Estimation of Respiratory Rate from Pulse Oximeters</b>, <i>IEEE Transactions on Biomedical Engineering</i>, [In press], 2016</a>
+	Pimentel, M.A.F. <i>et al.</i> <b>Towards a Robust Estimation of Respiratory Rate from Pulse Oximeters</b>, <i>IEEE Transactions on Biomedical Engineering</i>, 64(8), pp.1914-1923, 2017</a>
 
 <h3><span aria-hidden="true" class="octicon octicon-link"></span></a>Citation</h3>
 
-When using this dataset please cite these two publications:
+When using this dataset please also cite these two publications, which are standard citations for PhysioNet resources:
 
 <p>
 <a href="http://doi.org/10.1097/CCM.0b013e31820a92c6">
