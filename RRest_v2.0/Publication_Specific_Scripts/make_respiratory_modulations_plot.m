@@ -124,5 +124,6 @@ print(h_fig,'-dpng',savepath)
 
 % EPS
 % I found that using the save command on the figure window worked best.
+print(h_fig,'-depsc',savepath)
 
 end
