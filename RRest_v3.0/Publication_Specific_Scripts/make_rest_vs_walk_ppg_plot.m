@@ -83,6 +83,7 @@ box off
 
 % save figure
 set(gcf,'color','w');
-print(savepath, '-depsc')
+%print(savepath, '-depsc')
+print(savepath, '-dpng')
 
 end
