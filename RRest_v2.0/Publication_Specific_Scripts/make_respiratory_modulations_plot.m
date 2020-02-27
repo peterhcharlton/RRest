@@ -1,6 +1,6 @@
 function make_respiratory_modulations_plot
-% make_respiratory_modulations_plot creates the plot of respiratory
-% modulations of the ECG and PPG signals which is publicly available at: 
+% make_respiratory_modulations_plot creates a plot of respiratory
+% modulations of the ECG and PPG signals. 
 %
 %               make_respiratory_modulations_plot
 %
@@ -10,9 +10,13 @@ function make_respiratory_modulations_plot
 %           Physiological Measurement, 37(4), 2016
 %           DOI: https://doi.org/10.1088/0967-3334/37/4/610
 %   Please cite this publication when using this image.
+%
+%   In addition, it was modified on 27th Feb 2020 to also create individual
+%   images for the ECG and PPG
 %   
 %   Output:
-%       a PNG image in the same folder as this script
+%       PNG images in the same folder as this script: one illustrating both
+%       ECG and PPG signals, and one for each signal individually.
 %     
 %   Comments, Questions, Criticisms, Feedback, Contributions:
 %       See: http://peterhcharlton.github.io/RRest/contributions.html
@@ -74,7 +78,15 @@ for sig = {'ppg', 'ecg_data', 'sin_wave'}
     eval([sig{1,1} ' = data;']);
 end
 
+%% Make individual PPG and ECG modulations figures
+make_individual_ppg_ecg_figs(ppg, ecg_data);
+
 %% Make PPG and ECG modulations figure
+make_ppg_ecg_fig(ppg, ecg_data);
+
+end
+
+function make_ppg_ecg_fig(ppg, ecg_data)
 
 % setup figure
 close all
@@ -84,7 +96,7 @@ height = 0.18;
 width = 0.43;
 h_fig = figure('Position',paper_size*100);
 set(gcf,'color','w');
-color = get(h_fig,'Color'); 
+color = get(h_fig,'Color');
 fontsize = 16;
 
 % Plot PPG and ECG
@@ -105,7 +117,59 @@ set(h_fig,'PaperUnits','inches');
 set(h_fig,'PaperSize', [paper_size(3), paper_size(4)]);
 set(h_fig,'PaperPosition',[0 0 paper_size(3) paper_size(4)]);
 
-%% Commands to save figure
+%% Save figure
+save_name = 'resp_mods';
+save_fig(save_name, h_fig);
+
+end
+
+function make_individual_ppg_ecg_figs(ppg, ecg_data)
+
+for fig_no = 1 : 2
+    
+    switch fig_no
+        case 1
+            temp = ppg;
+            save_name = 'ppg_resp_mods';
+            sig_col = [0.3, 0.3, 1];
+    
+        case 2
+            temp = ecg_data;
+            save_name = 'ecg_resp_mods';
+            sig_col = [0.35, 0.45, 0.2];
+    
+    end
+    title_text = upper(save_name(1:3));
+    
+    % setup figure
+    close all
+    duration = 15;
+    paper_size = [480 270 500 540]./100;
+    height = 0.18;
+    width = 0.88;
+    h_fig = figure('Position',paper_size*100);
+    set(gcf,'color','w');
+    color = get(h_fig,'Color');
+    fontsize = 16;
+    
+    % Plot PPG or ECG
+    ax(1) = subplot('Position', [0.11, 0.76, width, height]); data = temp.seg; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel({' ','No       ', 'mod      '}, 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.2]), title(title_text, 'FontSize', fontsize)
+    ax(2) = subplot('Position', [0.11, 0.48, width, height]); data = temp.bw; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('BW       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.1])
+    ax(3) = subplot('Position', [0.11, 0.24, width, height]); data = temp.am; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('AM       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,-0.3])
+    ax(4) = subplot('Position', [0.11, 0.00, width, height]); data = temp.fm; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('FM       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.3])
+    
+    set(h_fig,'PaperUnits','inches');
+    set(h_fig,'PaperSize', [paper_size(3), paper_size(4)]);
+    set(h_fig,'PaperPosition',[0 0 paper_size(3) paper_size(4)]);
+    
+    %% Save figure
+    save_fig(save_name, h_fig);
+    
+end
+
+end
+
+function save_fig(save_name, h_fig)
 
 % Setup file path
 [folder, ~, ~] = fileparts(mfilename('fullpath'));
@@ -114,7 +178,7 @@ if ~isempty(strfind(folder, '\'))
 else
     slash_dirn = '/';
 end
-savepath = [folder, slash_dirn, 'resp_mods'];
+savepath = [folder, slash_dirn, save_name];
 
 % PNG
 print(h_fig,'-dpng',savepath)
