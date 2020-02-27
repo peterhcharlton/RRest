@@ -145,7 +145,7 @@ for fig_no = 1 : 2
     close all
     duration = 15;
     paper_size = [480 270 500 540]./100;
-    height = 0.18;
+    height = 0.21;
     width = 0.88;
     h_fig = figure('Position',paper_size*100);
     set(gcf,'color','w');
@@ -153,9 +153,9 @@ for fig_no = 1 : 2
     fontsize = 16;
     
     % Plot PPG or ECG
-    ax(1) = subplot('Position', [0.11, 0.76, width, height]); data = temp.seg; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel({' ','No       ', 'mod      '}, 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.2]), title(title_text, 'FontSize', fontsize)
-    ax(2) = subplot('Position', [0.11, 0.48, width, height]); data = temp.bw; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('BW       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.1])
-    ax(3) = subplot('Position', [0.11, 0.24, width, height]); data = temp.am; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('AM       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,-0.3])
+    ax(1) = subplot('Position', [0.11, 0.78, width, height]); data = temp.seg; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel({' ','No       ', 'mod      '}, 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.2]), %title(title_text, 'FontSize', fontsize)
+    ax(2) = subplot('Position', [0.11, 0.52, width, height]); data = temp.bw; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('BW       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.1])
+    ax(3) = subplot('Position', [0.11, 0.26, width, height]); data = temp.am; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('AM       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,-0.3])
     ax(4) = subplot('Position', [0.11, 0.00, width, height]); data = temp.fm; rel_els = find(data.t<=duration); plot(data.t(rel_els), data.v(rel_els), 'Color', sig_col, 'LineWidth', 2), xlim([min(data.t(rel_els)), max(data.t(rel_els))]), ylim([min(data.v(rel_els))-0.1, max(data.v(rel_els))+0.1]), set(gca, 'XTick', [], 'YTick', []), set(gca,'XColor',color,'YColor',color,'TickDir','out'), ylabel('FM       ', 'Rotation', 0, 'Color', 'k', 'FontSize', fontsize, 'Position', [-0.5,0.3])
     
     set(h_fig,'PaperUnits','inches');
