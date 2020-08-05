@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Respiratory Rate Estimation by peterhcharlton</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">An impedance pneumography signal quality index</h1>
+      <h2 class="project-tagline">Publication</h2>
+      <a href="publications.html" class="btn">Publications Homepage</a>
+    </section>
+
+    <section class="main-content">
+<h3> <a id="Summary" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h3>
+
+<p>In this article we developed and assessed the performance of a signal quality index (SQI) for the impedance pneumography signal.
+The SQI was developed using data from the <a href="listen_dataset.html">Listen dataset</a>, and assessed using data from the <a href="listen_dataset.html">Listen</a> and <a href="mimic_dataset.html">MIMIC</a> datasets.
+The SQI was found to accurately classify segments of impedance pneumography signal as either high or low quality. Furthermore, when it was coupled with a high performance RR algorithm, highly accurate and precise RRs were estimated from those segments deemed to be high quality.
+In this study performance was assessed in the critical care environment - further work is required to deteremine whether the SQI is suitable for use with wearable sensors.
+</p>
+	    
+	    <p>
+<span class="__dimensions_badge_embed__" data-doi="10.1088/1361-6579/aa670e" data-style="small_circle"></span><script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+	    </p>
+	    
+<h3> <a id="Abstract" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Abstract</h3>
+	    
+<p>Impedance pneumography (ImP) is widely used for respiratory rate (RR) monitoring. However, ImP-derived RRs can be imprecise. Our aim was to develop a signal quality index (SQI) for the ImP signal, and couple it with a RR algorithm, to improve RR monitoring.</p>
+
+<p>An SQI was designed which identifies candidate breaths and assesses signal quality using: the variation in detected breath durations, how well peaks and troughs are defined, and the similarity of breath morphologies. Its performance was evaluated using two critical care datasets. RRs were estimated from high-quality segments using a RR algorithm, and compared with reference RRs derived from manual annotations.</p>
+
+<p>The SQI had a sensitivity of 77.7&#37;, and specificity of 82.3&#37;. RRs estimated from segments classified as high quality were accurate and precise, with mean absolute errors of 0.21 and 0.40 breaths per minute (bpm) on the two datasets. Clinical monitor RRs were significantly less precise. The SQI classified 34.9&#37; of real-world data as high quality.</p>
+
+<p>We conclude that the proposed SQI accurately identifies high-quality segments, and RRs estimated from those segments are precise enough for clinical decision making. This SQI may improve RR monitoring in critical care. Further work should assess it with wearable sensor data.</p>
+
+<h3> <a id="Full_text" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Link to full text</h3>
+
+<a href="#">
+	Charlton P.H. <i>et al.</i> <b>An impedance pneumography signal quality index: design, assessment and application to respiratory rate monitoring</b>, <i>[under review]</i>, 2020</a>	    
+	    
+<h3> <a id="Reproduce" class="anchor" href="#datasets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reproducing this study</h3>
+
+This study can be reproduced by following the instructions <a href="https://github.com/peterhcharlton/RRest/tree/master/RRest_v3.0/Publication_Specific_Scripts/ImP_SQI">here</a>.
+
+
+
+    </section>
+
+  
+  </body>
+</html>
