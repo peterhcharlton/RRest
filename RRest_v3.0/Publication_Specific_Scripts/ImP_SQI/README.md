@@ -29,7 +29,7 @@ These steps include downloading the raw data files, extracting data from these f
 
 *   Use the *ImP_SQI_mimic_data_importer.m* script to download raw MIMIC data files from PhysioNet, and collate them into a single Matlab file.
 *   Prepare the dataset for manual annotation by running the *run_imp_sqi_mimic.m* script.
-*   Manually annotate the signals by running the *run_mimic_imp_annotation.m* script - the annotations are stored in separate files.
+*   Manually annotate the signals by running the *run_mimic_imp_annotation.m* script - the annotations are stored in separate files (the original annotation files are available [here]()).
 *   Import the manual annotations into the collated data file by re-running the *ImP_SQI_mimic_data_importer.m* script.
 *   Run *run_imp_sqi_mimic.m* to perform the analysis described in the publication.
 
