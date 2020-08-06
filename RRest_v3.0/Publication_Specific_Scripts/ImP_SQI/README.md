@@ -27,9 +27,9 @@ These steps can be used to quickly reproduce the analysis using the curated and 
 ### Full reproduction
 These steps include downloading the raw data files, extracting data from these files, collating the dataset, manually annotating the data, and performing the analysis.
 
-*   Use the *[ImP_SQI_mimic_data_importer.m](https://zenodo.org/record/3973771/files/ImP_SQI_mimic_data_importer.m?download=1)* script to download raw MIMIC data files from PhysioNet, and collate them into a single Matlab file.
+*   Use the *[ImP_SQI_mimic_data_importer.m](https://zenodo.org/record/3973771/files/ImP_SQI_mimic_data_importer.m?download=1)* script to download raw MIMIC data files from PhysioNet, and collate them into a single Matlab file. https://zenodo.org/record/3974113/files/ImP_SQI_mimic_data_importer.m?download=1
 *   Prepare the dataset for manual annotation by running the *[run_imp_sqi_mimic.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script.
-*   Manually annotate the signals by running the *[run_mimic_imp_annotation.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script - the annotations are stored in separate files (the original annotation files are available [here]()).
+*   Manually annotate the signals by running the *[run_mimic_imp_annotation.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script - the annotations are stored in separate files (the original annotation files are available [here](https://zenodo.org/record/3974113/files/2019_annotations.zip?download=1)).
 *   Import the manual annotations into the collated data file by re-running the *[ImP_SQI_mimic_data_importer.m](https://zenodo.org/record/3973771/files/ImP_SQI_mimic_data_importer.m?download=1)* script.
 *   Run *[run_imp_sqi_mimic.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* to perform the analysis described in the publication.
 
