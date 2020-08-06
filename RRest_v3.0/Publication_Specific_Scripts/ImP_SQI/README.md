@@ -21,17 +21,17 @@ The work relating to the MIMIC dataset in this publication can be reproduced as 
 ### Reproducing the analysis
 These steps can be used to quickly reproduce the analysis using the curated and annotated dataset.
 
-*   Download the curated and annotated dataset from [Zenodo]() using this [direct download link]().
-*   Run the analysis using the *run_imp_sqi_mimic.m* script.
+*   Download the curated and annotated dataset from [Zenodo](https://doi.org/10.5281/zenodo.3973770) using this [direct download link](https://zenodo.org/record/3973771/files/mimic_imp_sqi_data.mat?download=1).
+*   Run the analysis using the *[run_imp_sqi_mimic.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script.
 
 ### Full reproduction
 These steps include downloading the raw data files, extracting data from these files, collating the dataset, manually annotating the data, and performing the analysis.
 
-*   Use the *ImP_SQI_mimic_data_importer.m* script to download raw MIMIC data files from PhysioNet, and collate them into a single Matlab file.
-*   Prepare the dataset for manual annotation by running the *run_imp_sqi_mimic.m* script.
-*   Manually annotate the signals by running the *run_mimic_imp_annotation.m* script - the annotations are stored in separate files (the original annotation files are available [here]()).
-*   Import the manual annotations into the collated data file by re-running the *ImP_SQI_mimic_data_importer.m* script.
-*   Run *run_imp_sqi_mimic.m* to perform the analysis described in the publication.
+*   Use the *[ImP_SQI_mimic_data_importer.m](https://zenodo.org/record/3973771/files/ImP_SQI_mimic_data_importer.m?download=1)* script to download raw MIMIC data files from PhysioNet, and collate them into a single Matlab file.
+*   Prepare the dataset for manual annotation by running the *[run_imp_sqi_mimic.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script.
+*   Manually annotate the signals by running the *[run_mimic_imp_annotation.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* script - the annotations are stored in separate files (the original annotation files are available [here]()).
+*   Import the manual annotations into the collated data file by re-running the *[ImP_SQI_mimic_data_importer.m](https://zenodo.org/record/3973771/files/ImP_SQI_mimic_data_importer.m?download=1)* script.
+*   Run *[run_imp_sqi_mimic.m](https://zenodo.org/record/3973771/files/run_imp_sqi_mimic.m?download=1)* to perform the analysis described in the publication.
 
 ## Further Resources
 
