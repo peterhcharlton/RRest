@@ -173,15 +173,11 @@ function save_fig(save_name, h_fig)
 
 % Setup file path
 [folder, ~, ~] = fileparts(mfilename('fullpath'));
-if ~isempty(strfind(folder, '\'))
-    slash_dirn = '\';
-else
-    slash_dirn = '/';
-end
-savepath = [folder, slash_dirn, save_name];
+savepath = [folder, filesep, save_name];
 
 % PNG
 print(h_fig,'-dpng',savepath)
+print(h_fig,'-dsvg',savepath)
 
 % PDF
 % print(h_fig,'-dpdf',savepath)
