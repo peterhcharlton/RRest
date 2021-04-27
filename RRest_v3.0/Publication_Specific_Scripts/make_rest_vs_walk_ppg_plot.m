@@ -1,8 +1,8 @@
 function make_rest_vs_walk_ppg_plot
-% make_respiratory_modulations_plot creates the plot of respiratory
-% modulations of the ECG and PPG signals which is publicly available at: 
+% make_rest_vs_walk_ppg_plot creates a plot of PPG signals acquired whilst 
+% at rest and whilst walking
 %
-%               make_respiratory_modulations_plot
+%               make_rest_vs_walk_ppg_plot
 %
 %	This file creates an image adapted from:
 %           Pimentel M.A.F. et al. Probabilistic estimation of respiratory
@@ -10,10 +10,9 @@ function make_rest_vs_walk_ppg_plot
 %           Mukhopadhyay, S. C., Ed.; Springer International Publishing,
 %           2015; Vol. 15, pp. 241–62
 %           DOI: https://doi.org/10.1007/978-3-319-18191-2_10
-%   Please cite this publication when using this image.
 %   
 %   Output:
-%       an EPS image in the same folder as this script
+%       image files in the same folder as this script
 %     
 %   Comments, Questions, Criticisms, Feedback, Contributions:
 %       See: http://peterhcharlton.github.io/RRest/contributions.html
@@ -65,7 +64,7 @@ subplot(2,1,1)
 plot([0:length(data.r.v)-1]/data.r.fs, data.r.v, 'LineWidth', lwidth)
 curr_range = range(data.r.v);
 ylim([min(data.r.v)-0.1*curr_range, max(data.r.v)+0.1*curr_range])
-ylab = ylabel({'PPG','at rest', '[au]'}, 'FontSize', ftsize, 'Rotation', 0);
+ylab = ylabel({'PPG','at rest'}, 'FontSize', ftsize, 'Rotation', 0);
 set(ylab, 'Units', 'normalized', 'Position', [-0.07, 0.3])
 set(gca, 'YTick', [], 'XTick', 0:2:10, 'FontSize', ftsize)
 box off
@@ -75,8 +74,8 @@ subplot(2,1,2)
 plot([0:length(data.w.v)-1]/data.w.fs, data.w.v, 'LineWidth', lwidth)
 curr_range = range(data.w.v);
 ylim([min(data.w.v)-0.1*curr_range, max(data.w.v)+0.1*curr_range])
-xlabel('Time [s]', 'FontSize', ftsize)
-ylab = ylabel({'PPG','walking', '[au]'}, 'FontSize', ftsize, 'Rotation', 0);
+xlabel('Time (s)', 'FontSize', ftsize)
+ylab = ylabel({'PPG','walking'}, 'FontSize', ftsize, 'Rotation', 0);
 set(ylab, 'Units', 'normalized', 'Position', [-0.07, 0.3])
 set(gca, 'YTick', [], 'XTick', 0:2:10, 'FontSize', ftsize)
 box off
@@ -85,5 +84,6 @@ box off
 set(gcf,'color','w');
 %print(savepath, '-depsc')
 print(savepath, '-dpng')
+print(savepath, '-dsvg')
 
 end
