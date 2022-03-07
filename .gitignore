@@ -1,0 +1,7 @@
+**/.DS_Store
+.DS_Store
+Docs/.DS_Store
+/source/*
+/docs/assets/*
+/docs/datasets/*
+!/docs/datasets/summary.md
