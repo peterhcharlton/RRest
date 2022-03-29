@@ -97,15 +97,13 @@ set(h_fig,'PaperPosition',[0 0 paper_size(3) paper_size(4)]);
 
 % Setup file path
 [folder, ~, ~] = fileparts(mfilename('fullpath'));
-if ~isempty(strfind(folder, '\'))
-    slash_dirn = '\';
-else
-    slash_dirn = '/';
-end
-savepath = [folder, slash_dirn, 'resp_sigs'];
+savepath = [folder, filesep, 'resp_sigs'];
 
 % PNG
 print(h_fig,'-dpng',savepath)
+
+% SVG
+print(h_fig, '-dsvg', savepath)
 
 % PDF
 % print(h_fig,'-dpdf',savepath)
@@ -114,4 +112,3 @@ print(h_fig,'-dpng',savepath)
 % I found that using the save command on the figure window worked best.
 
 end
-
