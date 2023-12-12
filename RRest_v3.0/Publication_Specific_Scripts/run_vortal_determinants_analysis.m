@@ -91,6 +91,7 @@ up.paths.slash_direction = '\';     % usually a backslash for Windows, forward s
 % then the data root folder should be specified as:
 %     'C:\Documents\Data\'
 up.paths.root_folder = 'C:\Documents\Data\';
+up.paths.root_folder = 'C:\DataBase\BIDMC\bidmc-ppg-and-respiration-dataset-1.0.0\';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% LOAD PREVIOUS UNIVERSAL PARAMETERS %%%%%%%%
@@ -101,7 +102,7 @@ up.paths.root_folder = 'C:\Documents\Data\';
 provide_licence_details
 % setup paths
 up_filename = 'up';
-dataset_name = 'vortal_factors';
+dataset_name = 'bidmc';%'vortal_factors';
 up.paths.root_data_folder = [up.paths.root_folder, dataset_name, up.paths.slash_direction];
 up.paths.data_save_folder = [up.paths.root_data_folder, 'Analysis_files', up.paths.slash_direction, 'Component_Data', up.paths.slash_direction];
 up_path = [up.paths.data_save_folder, up_filename];
@@ -143,6 +144,14 @@ function win_data = load_win_data_file(up)
 fprintf('\n--- Loading data');
 
 % load win_data file
+
+up_filename = 'up';
+dataset_name = 'bidmc';%'vortal_factors';
+up.paths.root_data_folder = [up.paths.root_folder, dataset_name, up.paths.slash_direction];
+up.paths.data_save_folder = [up.paths.root_data_folder, 'Analysis_files', up.paths.slash_direction, 'Component_Data', up.paths.slash_direction];
+up_path = [up.paths.data_save_folder, up_filename]
+
+
 load([up.paths.data_save_folder, up.paths.filenames.win_data], 'win_data')
 
 % eliminate non-sensical algorithms
@@ -2657,13 +2666,21 @@ end
 
 function compare_ecg_and_ppg_mods(win_data, up)
 
+bad_els = win_data.m_xb==10;
+
+
 fprintf('\n--- Fig 6');
 
 % specify signals of interest
+% if strcmp(up.pub.equip_type, 'clin')
+%     sigs = {'ppgclin', 'ekgclin'};
+% elseif strcmp(up.pub.equip_type, 'lab')
+%     sigs = {'ppgfraw', 'ekgraw'};
+% end
+
 if strcmp(up.pub.equip_type, 'clin')
-    sigs = {'ppgclin', 'ekgclin'};
-elseif strcmp(up.pub.equip_type, 'lab')
-    sigs = {'ppgfraw', 'ekgraw'};
+    sigs = {'ppg', 'ekg'};
+    sigs = {'ppg'};
 end
 
 % extract relevant index measures
@@ -2690,7 +2707,7 @@ for pop_no = 1:length(pops)
         eval(['rel_sig_els = win_data.' sigs{sig_no} '_log;']);
         
         % specify modulations
-        xb_mods = unique(win_data.m_xb(rel_sig_els)); xb_mods = xb_mods(~isnan(xb_mods));
+        xb_mods = unique(win_data.m_xb(rel_sig_els &~bad_els)); xb_mods = xb_mods(~isnan(xb_mods));
         xa_mods = unique(win_data.m_xa(rel_sig_els)); xa_mods = xa_mods(~isnan(xa_mods));
         no_mods = length(xa_mods)+length(xb_mods);
         x_labs = cell(no_mods,1);
@@ -2702,6 +2719,9 @@ for pop_no = 1:length(pops)
             end
         end
         poss_mods = [xa_mods; xb_mods];
+        % added by PC 27-Nov-23
+        poss_mods(poss_mods <14) = []; % there was something wrong with the earlier modulations (e.g. 10 or 11 i think - they seemed to have more than one result per window)
+        % end added
         
         for mod_no = 1 : length(poss_mods)
             curr_mod = poss_mods(mod_no);
@@ -2726,6 +2746,12 @@ for pop_no = 1:length(pops)
                 for win_no = 1 : length(subj_wins)
                     curr_win = subj_wins(win_no);
                     cand_ind_meas = unique(temp_ind_meas(temp_win_no == curr_win & temp_subj == curr_subj));
+
+                    % added by PC 27-Nov-23
+                    rel_els_pc = rel_sig_els & win_data.m_xb == curr_mod & ~isnan(rel_meas) & win_data.comb_log & rel_pop_els & win_data.win_no == curr_win & win_data.subj == curr_subj;
+                    cand_ind_meas = rel_meas(rel_els_pc);
+                    % end added bit
+
                     if length(cand_ind_meas) == 1
                         temp_meas(win_no,1) = cand_ind_meas;
                     else

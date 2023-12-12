@@ -372,6 +372,19 @@ temp = load(loadpath); clear loadpath
 old_names = sort(fieldnames(temp));     % used to be: old_names = fieldnames(temp);
 alg_names.old_names = old_names;
 
+%% create new modulation numbers for pyppg features
+all_bm_name=up.al.options.bm_names;
+pyppg.mod_nos = nan(length(all_bm_name),1);
+pyppg.orig_names = cell(length(all_bm_name),1);
+counter = 14;
+for ind_bm=1:length(all_bm_name)
+    pyppg.orig_names{ind_bm}=all_bm_name{ind_bm};
+    pyppg.mod_nos(ind_bm) = counter;
+    counter = counter +1;
+end
+
+
+
 %% Rename algorithm names according to the nomenclature used in the paper:
 [alg_names.names, alg_names.sigs] = deal(cell(length(old_names),1));
 for alg_no = 1 : length(old_names)
@@ -420,6 +433,24 @@ for alg_no = 1 : length(old_names)
     rel_name = strrep(rel_name, 'qrS', 'Xb11');
     rel_name = strrep(rel_name, 'rsS', 'Xb12');
     rel_name = strrep(rel_name, 'Rang', 'Xb13');
+    % additional pyppg features
+    for ind_bm=1:length(all_bm_name)
+        rel_name = strrep(rel_name, pyppg.orig_names{ind_bm}, ['Xb', num2str(pyppg.mod_nos(ind_bm))]);
+    end
+
+
+%     % pyPPG Features
+%     all_bm_name=up.al.options.bm_names;
+%     for ind_bm=1:length(all_bm_name)
+%         tmp_name=all_bm_name{ind_bm};
+%         num_id=sprintf('%02d', ind_bm);
+%         rep_name=['pyPPG',num_id];
+%         tmp_ind=strfind(rel_name,tmp_name);
+%         if length(tmp_ind)==1
+%             rel_name = strrep(rel_name, tmp_name, rep_name);
+%         end
+%     end
+
     
     % get rid of resampling annotations
     rel_name = strrep(rel_name, 'RScubB', '');

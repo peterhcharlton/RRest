@@ -51,7 +51,7 @@ up.paths.slash_direction = filesep;     % usually a backslash for Windows, forwa
 % "up.paths.root_folder = 'C:\Documents\Data\';", then data will be saved
 % in the directory located at 'C:\Documents\Data\DATASETNAME\', where
 % "DATASETNAME" is the name of the dataset being analysed, e.g. "vortal_rest".
-up.paths.root_folder = 'C:\Documents\Data\';
+up.paths.root_folder = 'C:\DataBase\BIDMC\bidmc-ppg-and-respiration-dataset-1.0.0\';%'C:\Documents\Data\';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% LOAD PREVIOUS UNIVERSAL PARAMETERS %%%%%%%%
@@ -90,7 +90,7 @@ fprintf('\n--- Creating Universal Parameters ');
 % Specify the stages of the algorithms (best left alone):
 up.al.key_components = {'extract_resp_sig', 'estimate_rr', 'fuse_rr'};      % To run the analysis in full this should be: {'extract_resp_sig', 'estimate_rr', 'fuse_rr'}
 % Specify methods for extraction of respiratory signals (feature / filter, ecg / ppg):
-up.al.options.extract_resp_sig = {'ppg_feat', 'ppg_filt', 'ekg_feat', 'ekg_filt'};  % Possible methods: 'ppg_feat', 'ekg_feat', 'ppg_filt', 'ekg_filt'
+up.al.options.extract_resp_sig = {'ppg_feat','ekg_feat'};%ppg_filt', 'ekg_feat', 'ekg_filt'};  % Possible methods: 'ppg_feat', 'ekg_feat', 'ppg_filt', 'ekg_filt'
 % ------------------------------------------------------
 % Specify the components for feature-based extraction of respiratory signals:
 up.al.sub_components.ppg_feat = {'EHF', 'PDt', 'FPt', 'FMe', 'RS', 'ELF'};  % Should read: {'EHF', 'PDt', 'FPt', 'FMe', 'RS', 'ELF'}
@@ -98,19 +98,22 @@ up.al.sub_components.ekg_feat = {'EHF', 'RDt', 'FPt', 'FMe', 'RS', 'ELF'};  % Sh
 % Specify the interchangeable technique(s) to be used for each component of feature-based extraction of respiratory signals:
 up.al.options.PDt = {'IMS'};                                                % Possible methods: 'DCl', 'COr', 'IMS'
 up.al.options.RDt = {'GC'};                                                 % Possible methods: 'GC', 'ME'
-up.al.options.FMe = {'am', 'fm', 'bw'};                                     % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca', 'qrS', 'rsS', 'Rang'
+up.al.options.FMe = {'am', 'fm', 'bw', 'pyppg_bm','Xb200'};                                     % Possible methods: 'pulW', 'am', 'fm', 'bw', 'pk', 'on', 'bwm', 'qrsW', 'qrsA', 'pca', 'qrS', 'rsS', 'Rang'
 % ------------------------------------------------------
 up.al.options.RS = {'linB'};                                                % Possible methods: 'cub', 'cubB', 'brg', 'lin', 'brgB', 'linB'
 % Specify the interchangeable technique(s) to be used for filter-based respiratory signal extraction:
 up.al.options.ekg_filt = {'Wfm', 'Wam', 'BFi'};                             % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 up.al.options.ppg_filt = {'Wfm', 'Wam', 'BFi'};                             % Possible methods: 'Wfm', 'Wam', 'CCF', 'BFi'
 % Specify the interchangeable technique(s) for RR Estimation
-up.al.options.estimate_rr = {'FTS', 'ARS', 'ARM', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'};       % Possible methods: 'FTS', 'ARS', 'ARM', 'ARP', 'ARPz', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'
+%up.al.options.estimate_rr = {'FTS', 'ARS', 'ARM', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'};       % Possible methods: 'FTS', 'ARS', 'ARM', 'ARP', 'ARPz', 'ACF', 'WCH', 'PKS', 'ZeX', 'PZX', 'CtO', 'CtA'
+up.al.options.estimate_rr = {'CtO'};   
 % Different methods for fusion of RR estimates:
 up.al.options.fuse_rr = {'fus_mod', 'fus_temp'};                            % Possible methods: 'fus_mod', 'fus_temp'
 % Components for each method of extraction of RR fusion:
-up.al.sub_components.fus_mod = {'SFu', 'SPA'};                              % Possible methods: 'SFu', 'PMC', 'PRC', 'SPA'
-up.al.sub_components.fus_temp = {'TFu'};                                    % Possible methods: 'TFu'
+%up.al.sub_components.fus_mod = {'SFu', 'SPA'};                              % Possible methods: 'SFu', 'PMC', 'PRC', 'SPA'
+up.al.sub_components.fus_mod = {'SFu'};  
+%up.al.sub_components.fus_temp = {'TFu'};                                    % Possible methods: 'TFu'
+up.al.sub_components.fus_temp = {};   
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% DIRECTORIES %%%%%%%%%%%%%%%%%%%%%%%
@@ -178,6 +181,33 @@ up.paths.filenames.rest_and_rec_win_data = 'rest_and_rec_win_data';
 up.paths.filenames.temp_prec_plot ='temp_prec_plot';
 up.paths.filenames.feat_filt_plot = 'feat_filt_plot';
 
+abs_path=pwd;
+end_p=strfind(abs_path,'Peter_toolbox')-1;
+abs_path=abs_path(1:end_p);
+bm_dir=[abs_path,'python\PPG_feats\all_BM\'];
+up.paths.bm = bm_dir;
+
+fpt_dir=[abs_path,'python\PPG_feats\Fiducial_points\'];
+up.paths.fpt = fpt_dir;
+
+% extract names of biomarkers
+if sum(strcmp(up.al.options.FMe, 'pyppg_bm'))
+    dataset_name = up.paths.data_load_filename;
+    dataset_name = strrep(dataset_name, 'data', '');
+    num_id=sprintf('%02d', 1);
+    loadpath = [up.paths.bm, dataset_name, num_id,'.mat'];
+    load(loadpath);
+    bm_names = fieldnames(all_bm);
+    bm_names = bm_names(:)';
+%     bm_names=[];%bm_names(24);
+    bm_names(strcmp(bm_names, 'Index of pulse')) = [];
+    bm_names(strcmp(bm_names, 'TimeStamp')) = [];
+    up.al.options.FMe = [up.al.options.FMe, bm_names];
+    up.al.options.FMe(strcmp(up.al.options.FMe, 'pyppg_bm')) = [];
+    up.al.options.bm_names = bm_names;
+end
+
+
 % Make directories
 directories_to_make = {up.paths.data_load_folder, up.paths.data_save_folder, up.paths.results_folder, up.paths.plots_save_folder, up.paths.tables_save_folder};
 for s = 1 : length(directories_to_make)
@@ -219,12 +249,14 @@ else
     up.analysis.run_analysis = false;
     up.paths.equipment_type = '';                                           % Possible equipment types: either '_clin' for clinical monitor, or empty, '', for raw signal acquisition
 end
-up.paramSet.subj_list = 1:length(data);
+up.paramSet.subj_list = 1:length(data);%:5
 
 % Find out which sub and sub-sub group analyses need conducting
-up.paramSet.groups = extractfield(data, 'group');
-if sum(strcmp(fieldnames(data), 'sub_group'))
-    up.paramSet.sub_groups = extractfield(data, 'sub_group');
+if sum(strcmp(fieldnames(data),'group'))
+    up.paramSet.groups = extractfield(data, 'group');
+    if sum(strcmp(fieldnames(data), 'sub_group'))
+        up.paramSet.sub_groups = extractfield(data, 'sub_group');
+    end
 end
 
 % Find out what ppg and ekg signals there are:

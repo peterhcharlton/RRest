@@ -55,6 +55,7 @@ function RRest(period)
 % The universal parameters are used throughout the algorithms
 up = setup_universal_params(period);
 
+up.analysis.run_analysis = 1;
 if up.analysis.run_analysis
     
     %% Estimate RRs from ECG and PPG

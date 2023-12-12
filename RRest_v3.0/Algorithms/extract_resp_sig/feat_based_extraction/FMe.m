@@ -35,6 +35,7 @@ for subj = up.paramSet.subj_list
         end
         rel_var_names = var_names(logical(rel_log));
         for rel_var_name_no = 1 : length(rel_var_names)
+            % could move biomarker loading to here
             for current_opt_no = 1 : length(up.al.options.FMe)
                 % skip out ones that aren't relevant to the ppg
                 if strcmp(sig_type, 'ppg') && ( strcmp(up.al.options.FMe{current_opt_no}, 'qrsW') ...
@@ -60,6 +61,18 @@ for subj = up.paramSet.subj_list
                 
                 %% Load relevant data
                 
+                % load file containing biomarkers from pyPPG
+                dataset_name = up.paths.data_load_filename;
+                dataset_name = strrep(dataset_name, 'data', '');
+                num_id=sprintf('%02d', subj);
+                loadpath = [up.paths.bm, dataset_name, num_id,'.mat'];
+                load(loadpath);
+
+                loadpath = [up.paths.fpt, dataset_name, num_id,'*.mat'];
+                file = dir(loadpath);
+                loadpath = [up.paths.fpt, file.name];
+                load(loadpath);
+                    
                 % only load signal data if not loaded already
                 if ~exist('sig_data', 'var')
                     loadpath = [up.paths.data_save_folder, num2str(subj), up.paths.filenames.int_respSigs];
@@ -146,7 +159,53 @@ for subj = up.paramSet.subj_list
                 
                 %% Measure Features
                 sig_data.wave_type = curr_sig;   % for PCA
-                feat_data = feval(['calc_' up.al.options.FMe{current_opt_no}], peaks, onsets, sig_data.fs, sig_data, up);
+
+                tmp_name=up.al.options.FMe{current_opt_no};
+                if sum(strcmp(up.al.options.bm_names, tmp_name))
+                    % Define current biomarker                             
+                    bm_name=up.al.options.FMe{current_opt_no};
+                    bm=eval(['[all_bm(:).',bm_name,'];'])';
+
+                    % Define peaks and onsets
+                    fs=sig_data.fs;
+                    mode_on='pym';
+                    mode_sp='pym';
+                    [on, sp]=get_on_and_sp(PPG_fiducials,onsets,peaks,mode_on,mode_sp,sig_data);
+
+                    % Find rigth fiducial indexes
+                    ind_sp=find(~isnan(sp.t) & ~isnan(sp.v) & ~isnan(sp.i));%find(~isnan(sp));
+                    ind_on=find(~isnan(sp.t) & ~isnan(sp.v) & ~isnan(sp.i));%find(~isnan(on));
+                    fp_ind=sp.i(intersect(ind_sp,ind_on));
+                    bm_ind=find(~isnan(bm));
+                    [~, bmi, fpi]= intersect(bm_ind,fp_ind);
+                    for i=1:3
+                        fns=cell2mat(fieldnames(sp));
+                        fn=fns(i);
+                        new_sp.(fn)=sp.(fn)(fpi);
+                        new_on.(fn)=on.(fn)(fpi);
+                    end
+
+                    % Find rigth biomarker Time Stamps
+                    bm=bm(bmi);
+                    TimeStamp=[all_bm.('TimeStamp')]';
+                    TimeStamp=TimeStamp(bm_ind);
+
+                    % Define final biomarkers
+                    BM.t = mean([new_on.t, new_sp.t], 2);
+                    BM.v = bm;
+                    
+                    % Normalise
+                    feat_data.v = double(BM.v./nanmean(BM.v));
+                    feat_data.t = double(BM.t);
+                    feat_data.fs = fs;
+                elseif tmp_name=="Xb200"
+                    mode_on='pyc';
+                    mode_sp='pym';
+                    [new_on, new_sp]=get_on_and_sp(PPG_fiducials,onsets,peaks,mode_on,mode_sp,sig_data);
+                    feat_data = feval(['calc_bw'], new_sp, new_on, sig_data.fs, sig_data, up);
+                else
+                    feat_data = feval(['calc_' tmp_name], peaks, onsets, sig_data.fs, sig_data, up);
+                end
                 feat_data.timings = rel_data.timings;
                 
                 %% Save results
@@ -158,6 +217,153 @@ for subj = up.paramSet.subj_list
         clear sig_data
     end
 end
+
+end
+
+%% Fuction to get new onsets and peaks
+function [new_on, new_sp]=get_on_and_sp(PPG_fiducials,onsets,peaks,mode_on,mode_sp,sig_data)
+    fs=sig_data.fs;
+    sp_py=[];
+    on_py=[];
+    sp_py.t=(double([PPG_fiducials.sp]')+1)/fs;
+    sp_py.v=sig_data.v([PPG_fiducials.sp]+1);
+    sp_py.i=[PPG_fiducials.('Index of pulse')]';
+    on_py.t=(double([PPG_fiducials.on]')+1)/fs;
+    on_py.v=sig_data.v([PPG_fiducials.on]+1);
+    on_py.i=[PPG_fiducials.('Index of pulse')]';
+
+    on_pyc=on_py;
+    for ti=2:length(on_py.t)-1
+        tempon=find(onsets.t>on_py.t(ti-1) & onsets.t<on_py.t(ti+1));
+        if length(tempon)>0
+            [~,tind]=min(abs(on_py.t(ti)-onsets.t(tempon)));
+            on_pyc.t(ti,1)=onsets.t(tempon(tind));
+            on_pyc.v(ti,1)=onsets.v(tempon(tind));
+        end
+    end
+
+    sp_pyc=sp_py;
+    for ti=2:length(sp_py.t)-1
+        tempon=find(peaks.t>sp_py.t(ti-1) & peaks.t<sp_py.t(ti+1));
+        if length(tempon)>0
+            [~,tind]=min(abs(sp_py.t(ti)-peaks.t(tempon)));
+            sp_pyc.t(ti,1)=peaks.t(tempon(tind));
+            sp_pyc.v(ti,1)=peaks.v(tempon(tind));
+        end
+    end
+
+    ext_on_ind=find(diff(on_pyc.t)==0);
+    ext_sp_ind=find(diff(sp_pyc.t)==0);
+
+    ext_all_ind=unique([ext_on_ind',ext_sp_ind']);
+
+    on_pyc.t(ext_all_ind)=[];
+    on_pyc.v(ext_all_ind)=[];
+    on_pyc.i(ext_all_ind)=[];
+    sp_pyc.t(ext_all_ind)=[];
+    sp_pyc.v(ext_all_ind)=[];
+    sp_pyc.i(ext_all_ind)=[];
+
+    on_pym=on_py;
+    sp_pym=sp_py;
+    on_pym.t(ext_all_ind)=[];
+    on_pym.v(ext_all_ind)=[];
+    on_pym.i(ext_all_ind)=[];
+    sp_pym.t(ext_all_ind)=[];
+    sp_pym.v(ext_all_ind)=[];
+    sp_pym.i(ext_all_ind)=[];
+
+    new_on=eval(['on_',mode_on]);
+    new_sp=eval(['sp_',mode_sp]);
+end
+
+function feat_data = calc_Xb200(peaks, onsets, fs, sig_data, up)
+
+% eliminate any nans (which represent ectopics which have been removed)
+peaks.t = peaks.t(~isnan(peaks.t));
+peaks.v = peaks.v(~isnan(peaks.v));
+onsets.t = onsets.t(~isnan(onsets.t));
+onsets.v = onsets.v(~isnan(onsets.v));
+
+% Find bw
+bw.v = mean([onsets.v, peaks.v], 2);
+bw.t = mean([onsets.t, peaks.t], 2);
+
+% Find am
+am.t = mean([onsets.t, peaks.t], 2);
+am.v = [peaks.v - onsets.v];
+
+% Get window modulation
+% Define parameters
+mu = 0;        % Mean of the Gaussian curve (center of the window)
+sigma = 5;     % Standard deviation (controls the width of the curve)
+dt=0.01;
+win_for_amp=20;
+t = -win_for_amp:dt:win_for_amp; % Time vector from 0 to 10 seconds with a step of 0.01 seconds
+
+% Generate Gaussian curve using gaussmf
+gaussian_curve = gaussmf(t, [sigma mu]);
+
+prod=[];
+for tmp_v=1:length(am.v)
+    tmp_ind=find((am.t<am.t(tmp_v)+win_for_amp) &(am.t>am.t(tmp_v)-win_for_amp));
+    tmp_amp=am.v(tmp_ind);
+    tmp_sec=am.t(tmp_ind)-am.t(tmp_v)+win_for_amp;
+    min_smpl=int32(min(tmp_sec)/dt)+1;
+    max_smpl=int32(max(tmp_sec)/dt)+1;
+    
+    % Desired number of elements
+    num_elem=(max_smpl-min_smpl)+1;
+    
+    % Equidistant time stamps
+    equi_time = linspace(double(min_smpl*dt), double(max_smpl*dt), num_elem);
+    
+    % Interpolate values at equidistant time stamps using linear interpolation
+    exp_values = interp1(tmp_sec, tmp_amp, equi_time, 'linear', 'extrap');
+
+    tmp_gauss=gaussian_curve(min_smpl:max_smpl);
+
+    prod(tmp_v)=sum(tmp_gauss.*exp_values)/double(num_elem);
+end
+
+
+% Normalise
+feat_data.v = bw.v./nanmean(prod);
+feat_data.t = bw.t;
+feat_data.fs = fs;
+
+end
+
+
+
+function feat_data = calc_ageingindex(sp, on, fs, sig_data, up, bm)
+
+% % eliminate any nans (which represent ectopics which have been removed)
+% peaks.t = peaks.t(~isnan(peaks.t));
+% peaks.v = peaks.v(~isnan(peaks.v));
+% onsets.t = onsets.t(~isnan(onsets.t));
+% onsets.v = onsets.v(~isnan(onsets.v));
+% 
+% % Find ageing index
+% ageingindex.t = mean([onsets.t, peaks.t], 2);
+% ageingindex.v = peaks.v;
+
+% eliminate any nans (which represent ectopics which have been removed)
+ind_AGI=AGI.indexs;
+
+AGI = tmp_bm(~isnan(tmp_bm));
+peaks.t = peaks(~isnan(peaks(ind_AGI)))/fs;
+onsets.t = onsets(~isnan(onsets(ind_AGI)))/fs;
+
+
+% Find ageing index
+ageingindex.t = mean([onsets.t, peaks.t], 2);
+ageingindex.v = AGI';
+
+% Normalise
+feat_data.v = ageingindex.v./nanmean(ageingindex.v);
+feat_data.t = ageingindex.t;
+feat_data.fs = fs;
 
 end
 
@@ -202,6 +408,7 @@ feat_data.t = bw.t;
 feat_data.fs = fs;
 
 end
+
 
 function feat_data = calc_bwm(peaks, onsets, fs, sig_data, up)
 
