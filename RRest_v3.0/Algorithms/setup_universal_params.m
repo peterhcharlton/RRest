@@ -207,7 +207,6 @@ if sum(strcmp(up.al.options.FMe, 'pyppg_bm'))
     up.al.options.bm_names = bm_names;
 end
 
-
 % Make directories
 directories_to_make = {up.paths.data_load_folder, up.paths.data_save_folder, up.paths.results_folder, up.paths.plots_save_folder, up.paths.tables_save_folder};
 for s = 1 : length(directories_to_make)
