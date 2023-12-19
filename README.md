@@ -1,18 +1,11 @@
-# Respiratory Rate Estimation Algorithms
+# Respiratory Rate Estimation Algorithms - Marton Goda's branch
 
-This repository contains algorithms for estimation of respiratory rate from the electrocardiogram and photoplethysmogram.
-It is compatible with several [publicly available datasets](http://peterhcharlton.github.io/RRest/datasets.html).
-Together, the algorithms and datasets provide tools to assist researchers in the development and evaluation of their own RR algorithms for estimation of RR from physiological signals.
-
-## User Manual
-
-The accompanying [Wiki](https://github.com/peterhcharlton/RRest/wiki) acts as a user manual for the algorithms presented in this repository.
-
-## Publications
-
-The algorithms presented in this repository have been used in several studies, with each version of algorithms corresponding to a different publication.
-A helpful starting point would be to try to replicate the results presented in this [tutorial](http://peterhcharlton.github.io/RRest/waveform_analysis.html).
-
-## Further Resources
-
-For those interested in estimating respiratory rate from physiological signals, the wider [Respiratory Rate Estimation project](http://peterhcharlton.github.io/RRest/), of which this is a part, will be of interest. It also contains additional material such as data to use with the algorithms, publications arising from the project, and details of how to contribute.
+To run the analysis:
+- Use RRest v.3.0 from Marton's branch
+- In `setup_universal_params`, modify `up.paths.root_folder` to be the location of the dataset, e.g. `up.paths.root_folder = '/Users/petercharlton/Documents/Data/pyresp_experiment/vortal_experiment_ds/';`
+- In `setup_universal_params`, modify `up.paths.bm` and `up.paths.fpt`, e.g
+```
+abs_path='/Users/petercharlton/Documents/Data/pyresp_experiment/vortal_experiment_ds/PPG_feats/';
+up.paths.bm = [abs_path, 'all_BM/'];
+up.paths.fpt = [abs_path, 'Fiducial_points/'];
+```
