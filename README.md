@@ -9,3 +9,6 @@ abs_path='/Users/petercharlton/Documents/Data/pyresp_experiment/vortal_experimen
 up.paths.bm = [abs_path, 'all_BM/'];
 up.paths.fpt = [abs_path, 'Fiducial_points/'];
 ```
+- In `setup_universal_params`, state `up.paths.data_load_filename = [period_orig, '_dataset'];` (e.g. after line 124)
+- In `setup_universal_params`, change `dataset_name = strrep(dataset_name, 'data', '');` to `dataset_name = strrep(dataset_name, 'rest_dataset', '');`
+- In `FMe`, change `dataset_name = strrep(dataset_name, 'data', '');` to `dataset_name = strrep(dataset_name, 'rest_dataset', '');`
