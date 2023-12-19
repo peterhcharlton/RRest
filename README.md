@@ -1,6 +1,7 @@
 # Respiratory Rate Estimation Algorithms - Marton Goda's branch
 
 To run the analysis:
+- Use pyPPG to identify fiducial points and calculate biomarkers - see [here](https://github.com/godamartonaron/PPG_resp_py) for instructions
 - Use RRest v.3.0 from Marton's branch
 - In `setup_universal_params`, modify `up.paths.root_folder` to be the location of the dataset, e.g. `up.paths.root_folder = '/Users/petercharlton/Documents/Data/pyresp_experiment/vortal_experiment_ds/';`
 - In `setup_universal_params`, modify `up.paths.bm` and `up.paths.fpt`, e.g
